@@ -10,9 +10,6 @@ def get_contestant_dir(c_id):
     contestant_dir = conn.fetchone()[0]
     return contestant_dir
 
-def get_problem_dir(p_id):
-    pass
-
 def get_total_score(c_id):
     query = '''SELECT SUM(points) FROM Score WHERE c_id = %s''' % (c_id)
     conn.execute(query)
