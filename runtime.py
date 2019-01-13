@@ -1,7 +1,6 @@
 from subprocess import run, Popen
 import os
 
-
 separator = "/"
 if os.name == 'nt':
     separator = "\\"
