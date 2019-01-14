@@ -1,5 +1,6 @@
 from subprocess import run, Popen
 import os
+import database
 
 if os.name == 'nt':
     separator = "\\"
@@ -7,16 +8,18 @@ else:
     separator = "/"
 
 class Run_Tests:
-    def __init__(self, program_file, program_filepath, io_filepath, input_output, compiler='gcc', run_command='./a.out'):
+    def __init__(self, c_id, program_file, program_filepath, io_filepath, input_output, compiler='gcc', run_command='./a.out'):
         '''
         Run_Tests constructor
+        :param c_id:
         :param program_file: string
         :param program_filepath: string
         :param io_filepath: string
-        :param input_output: list of tuples
+        :param input_output: tuple of tuples
         :param compiler: string
         :param run_command: string
         '''
+        self.c_id = c_id
         self.program_file = program_file
         self.program_filepath = program_filepath
         self.io_filepath = io_filepath
@@ -56,7 +59,7 @@ class Run_Tests:
     def run_tests(self):
         self.compile()
 
-        for input_filename, expected_output_filename in self.input_output:
+        for t_id, input_filename, expected_output_filename in self.input_output:
             input_file = open(self.io_filepath + separator + self.program_file + separator + 'Input' + separator + input_filename, 'r')
             expected_output_file = open(self.io_filepath + separator + self.program_file + separator + 'Output' + separator + expected_output_filename, 'r')
 
@@ -71,10 +74,12 @@ class Run_Tests:
             actual_output = actual_output_file.read()
 
             if expected_output != actual_output:
-                return False
+                points = 0
+            else:
+                points = 25
+            database.update_score(self.c_id, t_id, points)
+
 
             input_file.close()
             expected_output_file.close()
             actual_output_file.close()
-
-        return True
