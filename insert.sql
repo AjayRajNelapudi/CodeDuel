@@ -47,3 +47,9 @@ insert into testcase
     (22, 8, 'input1', 'output1'),
     (23, 8, 'input2', 'output2'),
     (24, 8, 'input3', 'output3');
+
+insert into directory
+    values
+    ('spec', '/Users/ajayraj/Documents/CodeDuelCursors2019/spec'),
+    ('src', '/Users/ajayraj/Documents/CodeDuelCursors2019/src'),
+    ('test', '/Users/ajayraj/Documents/CodeDuelCursors2019/test');
