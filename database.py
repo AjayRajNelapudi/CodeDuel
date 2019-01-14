@@ -53,4 +53,12 @@ def update_score(c_id, t_id, points):
         query = "INSERT INTO Score VALUES (%s, %s, %s)" % (c_id, t_id, points)
     conn.execute(query)
 
-print(update_score(1, 1, 10))
+def make_leaderboard():
+    query = ''' SELECT C.c_name, (  SELECT sum(S.points)
+                                    FROM Score S
+                                    WHERE C.c_id = S.c_id   ) AS Total
+                FROM Contestant C
+                ORDER BY Total DESC'''
+    conn.execute(query)
+    leaderboard = conn.fetchall()
+    return leaderboard

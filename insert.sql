@@ -48,6 +48,22 @@ insert into testcase
     (23, 8, 'input2', 'output2'),
     (24, 8, 'input3', 'output3');
 
+insert into score
+    values
+    (1, 1, 6),
+    (1, 2, 13),
+    (1, 3, 6),
+    (2, 1, 6),
+    (2, 2, 10),
+    (2, 3, 12),
+    (3, 1, 13),
+    (3, 2, 6),
+    (3, 3, 4),
+    (4, 1, 3),
+    (4, 2, 3),
+    (4, 3, 1);
+
+
 insert into directory
     values
     ('spec', '/Users/ajayraj/Documents/CodeDuelCursors2019/spec'),
