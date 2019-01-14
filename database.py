@@ -62,3 +62,16 @@ def make_leaderboard():
     conn.execute(query)
     leaderboard = conn.fetchall()
     return leaderboard
+
+def get_opponent_id(c_id):
+    query = "SELECT c_id_B FROM Duel WHERE c_id_A = %s" % (c_id)
+    tuples_count = conn.execute(query)
+
+    if tuples_count == 1:
+        opponent_id = conn.fetchone()[0]
+        return opponent_id
+
+    query = "SELECT c_id_A FROM Duel WHERE c_id_B = %s" % (c_id)
+    conn.execute(query)
+    opponent_id = conn.fetchone()[0]
+    return opponent_id
