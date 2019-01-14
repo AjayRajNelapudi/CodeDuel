@@ -1,9 +1,10 @@
 from subprocess import run, Popen
 import os
 
-separator = "/"
 if os.name == 'nt':
     separator = "\\"
+else:
+    separator = "/"
 
 class Run_Tests:
     def __init__(self, program_file, program_filepath, io_filepath, input_output, compiler='gcc', run_command='./a.out'):
@@ -64,7 +65,7 @@ class Run_Tests:
             if returncode != 0:
                 return False
 
-            actual_output_file = open(self.program_filepath + '/ActualOutput.txt', 'r')
+            actual_output_file = open(self.program_filepath + separator + 'ActualOutput.txt', 'r')
 
             expected_output = expected_output_file.read()
             actual_output = actual_output_file.read()
