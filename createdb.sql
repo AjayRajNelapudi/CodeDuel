@@ -2,22 +2,27 @@ CREATE DATABASE CodeDuel;
 
 USE CodeDuel;
 
-CREATE TABLE Directory (
-
+CREATE TABLE Path (
+    id VARCHAR(20) NOT NULL,
+    dir VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE Contestant (
     c_id INTEGER PRIMARY KEY,
-    c_name VARCHAR(20) NOT NULL,
-    c_dir VARCHAR(100) NOT NULL
+    c_name VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE Problem (
     p_id INTEGER PRIMARY KEY,
+    c_id INTEGER NOT NULL,
     p_title VARCHAR(20) NOT NULL,
     p_description VARCHAR(5000) NOT NULL,
+    p_dir VARCHAR(100) NOT NULL,
     p_rating INTEGER
 );
+
+ALTER TABLE Problem
+ADD CONSTRAINT c_id_fk_problem FOREIGN KEY(c_id) REFERENCES Contestant(c_id);
 
 CREATE TABLE Testcase (
     t_id INTEGER PRIMARY KEY,

@@ -3,6 +3,7 @@ import pymysql
 database = pymysql.connect('localhost', 'root', 'anitscse034')
 database.autocommit(True)
 conn = database.cursor()
+conn.execute('USE CodeDuel')
 
 def get_contestant_dir(c_id):
     query = '''SELECT c_dir FROM Contestant WHERE c_id = %s''' % (c_id)
@@ -15,3 +16,5 @@ def get_total_score(c_id):
     conn.execute(query)
     total_score = conn.fetchone()[0]
     return total_score
+
+print(get_contestant_dir(1))
