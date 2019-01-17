@@ -1,0 +1,3 @@
+To push a script and get results:
+
+python3 client.py <id> <filename withe extension>
