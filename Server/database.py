@@ -60,7 +60,7 @@ def get_pid(p_title):
     return p_id
 
 def make_leaderboard():
-    query = ''' SELECT C.c_name, (  SELECT sum(S.points)
+    query = ''' SELECT C.c_id, C.c_name, (  SELECT sum(S.points)
                                     FROM Score S
                                     WHERE C.c_id = S.c_id   ) AS Total
                 FROM Contestant C
@@ -81,3 +81,15 @@ def get_opponent_id(c_id):
     conn.execute(query)
     opponent_id = conn.fetchone()[0]
     return opponent_id
+
+def get_problem_names():
+    query = "SELECT p_title FROM Problem"
+    conn.execute(query)
+    problem_names = conn.fetchall()
+    return problem_names
+
+def get_all_cid():
+    query = "SELECT c_id FROM Contestant"
+    conn.execute(query)
+    all_cid = conn.fetchall()
+    return all_cid
