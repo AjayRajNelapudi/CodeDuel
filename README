@@ -1,3 +1,9 @@
+To setup file-system:
+python3 ServerAid/buildfiles.py
+
+To run the server:
+python3 Server/server.py
+
 To accept a challenge:
 python3 client.py <TitleOfTheProblem.txt>
 
