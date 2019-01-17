@@ -12,12 +12,12 @@ insert into duel
 
 insert into problem
     values
-    (1, 1, 'Sum Of N', '...', 1),
-    (2, 1, 'Prime Number', '...', 1),
-    (3, 2, 'Prime Range', '...', 3),
+    (1, 1, 'SumOfN', '...', 1),
+    (2, 1, 'PrimeNumber', '...', 1),
+    (3, 2, 'PrimeRange', '...', 3),
     (4, 2, 'Factors', '...', 2),
-    (5, 3, 'Max Of Array', '...', 2),
-    (6, 3, 'Graph Traversal', '...', 6),
+    (5, 3, 'MaxOfArray', '...', 2),
+    (6, 3, 'GraphTraversal', '...', 6),
     (7, 4, 'Huffman', '...', 10),
     (8, 4, 'Convex Hull', '...', 9);
 

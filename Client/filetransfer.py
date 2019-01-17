@@ -11,17 +11,18 @@ class FileUpload:
         self.c_id = c_id
 
         self.ftp = FTP('')
-        self.ftp.connect('localhost', 1026)
+        self.ftp.connect('', 1026)
         self.ftp.login()
-        self.ftp.cwd('/users/ajayraj/documents/codeduel/src/' + separator + str(self.c_id))
-        self.ftp.retrlines('LIST')
+        #self.ftp.retrlines('LIST')
 
-    def uploadFile(self, filename):
+    def upload_file(self, filename):
+        self.ftp.cwd('documents/codeduelcursors2019/src' + separator + str(self.c_id) + separator + filename.split('.')[0])
         self.ftp.storbinary('STOR ' + filename, open(filename, 'rb'))
-        self.ftp.quit()
 
-    def downloadFile(self, filename):
+    def download_file(self, filename):
         localfile = open(filename, 'wb')
         self.ftp.retrbinary('RETR ' + filename, localfile.write, 1024)
-        self.ftp.quit()
         localfile.close()
+
+    def __del__(self):
+        self.ftp.quit()

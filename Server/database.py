@@ -53,6 +53,12 @@ def update_score(c_id, t_id, points):
         query = "INSERT INTO Score VALUES (%s, %s, %s)" % (c_id, t_id, points)
     conn.execute(query)
 
+def get_pid(p_title):
+    query = "SELECT p_id FROM Problem WHERE p_title = '%s'" % (p_title)
+    conn.execute(query)
+    p_id = conn.fetchone()[0]
+    return p_id
+
 def make_leaderboard():
     query = ''' SELECT C.c_name, (  SELECT sum(S.points)
                                     FROM Score S
