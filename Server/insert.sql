@@ -19,7 +19,7 @@ insert into problem
     (5, 3, 'MaxOfArray', '...', 2),
     (6, 3, 'GraphTraversal', '...', 6),
     (7, 4, 'Huffman', '...', 10),
-    (8, 4, 'Convex Hull', '...', 9);
+    (8, 4, 'ConvexHull', '...', 9);
 
 insert into testcase
     values

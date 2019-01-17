@@ -31,10 +31,6 @@ class Run_Tests:
             compile_src.wait()
 
     def execute(self, input_data):
-        file = open(self.program_filepath + separator + 'ActualOutput.txt', 'r+')
-        file.truncate(0)
-        file.close()
-
         with open(self.program_filepath + separator + 'ActualOutput.txt', 'w') as actual_output_file:
             status = run(self.run_command,
                         cwd=self.program_filepath,
@@ -47,7 +43,7 @@ class Run_Tests:
 
     def run_tests(self):
         self.compile()
-        test_case_status = []
+        test_run_status = []
         for t_id, input_filename, expected_output_filename in self.input_output:
             input_file = open(self.io_filepath + separator + input_filename, 'r')
             expected_output_file = open(self.io_filepath + separator + expected_output_filename, 'r')
@@ -64,19 +60,14 @@ class Run_Tests:
 
             if expected_output.replace('\n', '') == actual_output.replace('\n', ''):
                 points = 10
-                test_case_status.append('P')
+                test_run_status.append('P')
             else:
                 points = 0
-                test_case_status.append('F')
+                test_run_status.append('F')
             database.update_score(self.c_id, t_id, points)
 
             input_file.close()
             expected_output_file.close()
             actual_output_file.close()
 
-        return test_case_status
-
-'''
-tests = runtime.Run_Tests(1, 'SumOfN.c', '/users/ajayraj/documents/codeduelcursors2019/src', '/users/ajayraj/documents/codeduelcursors2019/tests', [(1, 'input1', 'output1'), (2, 'input2', 'output2'), (3, 'input3', 'output3')])
-tests.run_tests()
-'''
+        return test_run_status
