@@ -59,14 +59,39 @@ def get_pid(p_title):
     p_id = conn.fetchone()[0]
     return p_id
 
-def make_leaderboard():
-    query = ''' SELECT C.c_id, C.c_name, (  SELECT sum(S.points)
+query = ''' SELECT C.c_id, C.c_name, (  SELECT sum(S.points)
                                     FROM Score S
                                     WHERE C.c_id = S.c_id   ) AS Total
                 FROM Contestant C
-                ORDER BY Total DESC'''
+                ORDER BY Total DESC '''
+def make_leaderboard():
+    leaderboard = []
+    query = "SELECT * FROM Duel"
     conn.execute(query)
-    leaderboard = conn.fetchall()
+    duels = conn.fetchall()
+    for duel in duels:
+        score_A = get_score(duel[0])
+        score_B = get_score(duel[1])
+
+        if type(score_A).__name__ == 'NoneType' and type(score_B).__name__ != 'NoneType':
+            leaderboard.append((duel[1], score_B))
+            continue
+        elif type(score_A).__name__ != 'NoneType' and type(score_B).__name__ == 'NoneType':
+            leaderboard.append((duel[0], score_A))
+            continue
+        elif type(score_A).__name__ == 'NoneType' and type(score_B).__name__ == 'NoneType':
+            continue
+
+        if score_A > score_B:
+            leaderboard.append((duel[0], score_A))
+        elif score_B > score_A:
+            leaderboard.append((duel[1], score_B))
+        else:
+            leaderboard.append((duel[0], score_A))
+            leaderboard.append((duel[1], score_B))
+
+    leaderboard.sort(key = lambda x: x[1])
+
     return leaderboard
 
 def get_opponent_id(c_id):
