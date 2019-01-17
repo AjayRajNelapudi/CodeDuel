@@ -1,5 +1,5 @@
 To accept a challenge:
-python3 client.py <TitleOfTheProblem>
+python3 client.py <TitleOfTheProblem.txt>
 
 To push a script and get results:
 python3 client.py <id> <filename withe extension
