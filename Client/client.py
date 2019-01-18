@@ -56,7 +56,7 @@ To accept a challenge:
 python3 client.py <TitleOfTheProblem.txt>
 
 To push a script and get results:
-python3 client.py <id> <filename withe extension
+python3 client.py <id> <filename withe extension> <compiler>
 
 To view yours and your opponent's points:
 python3 client.py <your id> points
