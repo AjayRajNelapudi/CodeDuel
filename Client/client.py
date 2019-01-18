@@ -38,13 +38,13 @@ def push_file(c_id, program_file):
     push_file = File_Transfer(c_id)
     push_file.upload_file(program_file)
 
-    message = str(c_id) + ',' + program_file
+    message = 'client,' + str(c_id) + program_file
     server.send(message.encode())
 
     test_run_status = server.recv(1024)
-    print(test_run_status.decode())
-
     server.close()
+
+    return test_run_status.decode()
 
 def accept_challenge(p_title):
     pull_file = File_Transfer(-1)
@@ -53,6 +53,7 @@ def accept_challenge(p_title):
 if len(sys.argv) == 2:
     accept_challenge(sys.argv[1])
 elif len(sys.argv) == 3:
-    push_file(int(sys.argv[1]), sys.argv[2])
+    test_run_status = push_file(int(sys.argv[1]), sys.argv[2])
+    print(test_run_status)
 else:
-    print('Incorrect No of args')
+    print('Incorrect no of args')

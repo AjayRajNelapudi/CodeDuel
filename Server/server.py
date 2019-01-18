@@ -38,15 +38,13 @@ server.bind((hostname, port))
 server.listen(10)
 
 while True:
-    def service(conn, addr, received_message):
-        c_id, program_file = received_message.split(',')
-
+    def client_service(conn, program_file):
         src_path = database.get_directory_path('src')
-        tests_path = database.get_directory_path('test')
+        test_path = database.get_directory_path('test')
         p_id = database.get_pid(program_file.split('.')[0])
         test_file_names = database.get_test_filenames(p_id)
 
-        run = runtime.Run_Tests(c_id, program_file, src_path, tests_path, test_file_names)
+        run = runtime.Run_Tests(c_id, program_file, src_path, test_path, test_file_names)
         test_run_status = run.run_tests()
         test_run_status = ' '.join(test_run_status)
 
@@ -56,5 +54,8 @@ while True:
 
     conn, addr = server.accept()
     received_message = conn.recv(port).decode()
-    service_thread = threading.Thread(target=service, args=(conn, addr, received_message))
-    service_thread.start()
+    user_type, c_id, request = received_message.split(',')
+
+    if user_type == 'client':
+        client_service_thread = threading.Thread(target=client_service, args=(conn, request))
+        client_service_thread.start()
