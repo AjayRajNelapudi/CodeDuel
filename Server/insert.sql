@@ -7,8 +7,8 @@ insert into contestant
 
 insert into duel
     values
-    (1, 2),
-    (3, 4);
+    (1, 1, 2),
+    (2, 3, 4);
 
 insert into problem
     values

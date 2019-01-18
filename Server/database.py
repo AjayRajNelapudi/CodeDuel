@@ -66,7 +66,7 @@ query = ''' SELECT C.c_id, C.c_name, (  SELECT sum(S.points)
                 ORDER BY Total DESC '''
 def make_leaderboard():
     leaderboard = []
-    query = "SELECT * FROM Duel"
+    query = "SELECT c_id_A, c_id_B FROM Duel"
     conn.execute(query)
     duels = conn.fetchall()
     for duel in duels:
@@ -83,12 +83,12 @@ def make_leaderboard():
             continue
 
         if score_A > score_B:
-            leaderboard.append((duel[0], score_A))
+            leaderboard.append((duel[0], get_contestant_name(duel[0]), score_A))
         elif score_B > score_A:
-            leaderboard.append((duel[1], score_B))
+            leaderboard.append((duel[1], get_contestant_name(duel[1]), score_B))
         else:
-            leaderboard.append((duel[0], score_A))
-            leaderboard.append((duel[1], score_B))
+            leaderboard.append((duel[0], get_contestant_name(duel[0]), score_A))
+            leaderboard.append((duel[1], get_contestant_name(duel[1]), score_B))
 
     leaderboard.sort(key = lambda x: x[1])
 
@@ -124,3 +124,9 @@ def get_testcase_points(t_id):
     conn.execute(query)
     t_points = conn.fetchone()[0]
     return t_points
+
+def get_duel_id(c_id):
+    query = "SELECT duel_id FROM Duel WHERE c_id_A = %s OR c_id_B = %s" % (c_id, c_id)
+    conn.execute(query)
+    duel_id = conn.fetchone()[0]
+    return duel_id

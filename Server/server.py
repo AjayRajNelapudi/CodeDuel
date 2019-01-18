@@ -48,6 +48,13 @@ while True:
         conn.send(test_run_status.encode())
         conn.close()
 
+        duel_id = database.get_duel_id(c_id)
+        print('\n\n\n')
+        print('Duel ID:', duel_id)
+        print('Contestant ID:', c_id)
+        print('Test Run:', test_run_status)
+        print('\n\n\n')
+
     def duel_scores(conn, c_id):
         opponent_id = database.get_opponent_id(c_id)
 
