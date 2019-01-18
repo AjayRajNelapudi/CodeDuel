@@ -30,7 +30,7 @@ class File_Transfer:
     def __del__(self):
         self.ftp.quit()
 
-def push_file_to_server(c_id, program_file):
+def push_file(c_id, program_file):
     server = socket.socket()
     hostname, port = 'localhost', 32757
     server.connect((hostname, port))
@@ -53,6 +53,6 @@ def accept_challenge(p_title):
 if len(sys.argv) == 2:
     accept_challenge(sys.argv[1])
 elif len(sys.argv) == 3:
-    push_file_to_server(int(sys.argv[1]), sys.argv[2])
+    push_file(int(sys.argv[1]), sys.argv[2])
 else:
     print('Incorrect No of args')
