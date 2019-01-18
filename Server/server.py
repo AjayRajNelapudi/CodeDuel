@@ -23,13 +23,13 @@ def ftp_service():
     handler = FTPHandler
     handler.authorizer = authorizer
 
-    ftp_server = FTPServer(("127.0.0.1", 1026), handler)
+    ftp_server = FTPServer(("", 1026), handler)
     ftp_server.serve_forever()
 
 ftp_service_thread = threading.Thread(target=ftp_service)
 ftp_service_thread.start()
 
-hostname, port = 'localhost', 32757
+hostname, port = '', 32757
 server = socket.socket()
 server.bind((hostname, port))
 server.listen(10)

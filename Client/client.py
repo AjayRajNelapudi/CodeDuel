@@ -4,7 +4,7 @@ from ftplib import FTP
 import os
 
 if os.name == 'nt':
-    separator = '//'
+    separator = '\\'
 else:
     separator = '/'
 
