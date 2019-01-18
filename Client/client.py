@@ -30,11 +30,11 @@ class File_Transfer:
     def __del__(self):
         self.ftp.quit()
 
-def push_file(c_id, program_file, compiler):
+def push_file(c_id, program_file):
     push_file = File_Transfer(c_id)
     push_file.upload_file(program_file)
 
-    message = 'client,' + str(c_id) + ',' + program_file + ',' + compiler
+    message = 'client,' + str(c_id) + ',' + program_file
     server.send(message.encode())
 
     test_run_status = server.recv(1024)
@@ -45,7 +45,7 @@ def accept_challenge(p_title):
     pull_file.download_file(p_title)
 
 def get_duel_scores(c_id):
-    message = 'client,' + str(c_id) + ',' + 'SCORE' + ','
+    message = 'client,' + str(c_id) + ',' + 'SCORE'
     server.send(message.encode())
     scores = server.recv(1024).decode()
     return scores
@@ -56,7 +56,7 @@ To accept a challenge:
 python3 client.py <TitleOfTheProblem.txt>
 
 To push a script and get results:
-python3 client.py <id> <filename with extension> <compiler>
+python3 client.py <id> <filename with extension>
 
 To view yours and your opponent's points:
 python3 client.py <your id> points
@@ -74,11 +74,12 @@ if len(sys.argv) == 2:
     else:
         accept_challenge(sys.argv[1])
 elif len(sys.argv) == 3:
-    scores = get_duel_scores(int(sys.argv[1]))
-    print(scores)
-elif len(sys.argv) == 4:
-    test_run_status = push_file(int(sys.argv[1]), sys.argv[2], sys.argv[3])
-    print(test_run_status)
+    if sys.argv[2] == 'SCORE':
+        scores = get_duel_scores(int(sys.argv[1]))
+        print(scores)
+    else:
+        test_run_status = push_file(int(sys.argv[1]), sys.argv[2])
+        print(test_run_status)
 else:
     print('Incorrect no of args')
 

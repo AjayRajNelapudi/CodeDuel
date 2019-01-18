@@ -35,13 +35,13 @@ server.bind((hostname, port))
 server.listen(10)
 
 while True:
-    def client_service(conn, c_id, program_file, program_compiler):
+    def client_service(conn, c_id, program_file):
         src_path = database.get_directory_path('src')
         test_path = database.get_directory_path('test')
         p_id = database.get_pid(program_file.split('.')[0])
         test_file_names = database.get_test_filenames(p_id)
 
-        run = runtime.Run_Tests(c_id, program_file, src_path, test_path, test_file_names, compiler = program_compiler)
+        run = runtime.Run_Tests(c_id, program_file, src_path, test_path, test_file_names)
         test_run_status = run.run_tests()
         test_run_status = ' '.join(test_run_status)
 
@@ -72,14 +72,14 @@ while True:
     conn, addr = server.accept()
     received_message = conn.recv(port).decode()
     try:
-        user_type, c_id, file, compiler = received_message.split(',')
+        user_type, c_id, file = received_message.split(',')
 
         if user_type == 'client':
             if file == 'SCORE':
                 duel_scores_thread = threading.Thread(target=duel_scores, args=(conn, c_id))
                 duel_scores_thread.start()
             else:
-                client_service_thread = threading.Thread(target=client_service, args=(conn, c_id, file, compiler))
+                client_service_thread = threading.Thread(target=client_service, args=(conn, c_id, file))
                 client_service_thread.start()
     except:
         conn.close()
