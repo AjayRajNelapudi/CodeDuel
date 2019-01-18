@@ -31,10 +31,6 @@ class File_Transfer:
         self.ftp.quit()
 
 def push_file(c_id, program_file):
-    server = socket.socket()
-    hostname, port = 'localhost', 32757
-    server.connect((hostname, port))
-
     push_file = File_Transfer(c_id)
     push_file.upload_file(program_file)
 
@@ -42,18 +38,33 @@ def push_file(c_id, program_file):
     server.send(message.encode())
 
     test_run_status = server.recv(1024)
-    server.close()
-
     return test_run_status.decode()
 
 def accept_challenge(p_title):
     pull_file = File_Transfer(-1)
     pull_file.download_file(p_title)
 
+def get_duel_scores(c_id):
+    message = 'client,' + str(c_id) + ',' + 'SCORE'
+    server.send(message.encode())
+    scores = server.recv(1024).decode()
+    return scores
+
+
+server = socket.socket()
+hostname, port = 'localhost', 32757
+server.connect((hostname, port))
+
 if len(sys.argv) == 2:
     accept_challenge(sys.argv[1])
 elif len(sys.argv) == 3:
-    test_run_status = push_file(int(sys.argv[1]), sys.argv[2])
-    print(test_run_status)
+    if sys.argv[2] == 'points':
+        scores = get_duel_scores(int(sys.argv[1]))
+        print(scores)
+    else:
+        test_run_status = push_file(int(sys.argv[1]), sys.argv[2])
+        print(test_run_status)
 else:
     print('Incorrect no of args')
+
+server.close()
