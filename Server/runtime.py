@@ -23,6 +23,16 @@ class Run_Tests:
         self.run_command = run_command
 
     def compile(self):
+        if self.compiler in {'gcc', 'g++'}:
+            self.run_command = "./a.out"
+        elif self.compiler == 'javac':
+            self.run_command = ['java', self.program_file.split('.')[0]]
+        elif self.compiler in {'python', 'python3'}:
+            self.run_command = ['python3', self.program_file.split('.')[0]]
+        elif self.compiler == 'java':
+            self.compiler = 'javac'
+            self.run_command = ['java', self.program_file.split('.')[0]]
+
         if not self.compiler in {'python', 'python3'}:
             compile_src = Popen([self.compiler, self.program_file], cwd=self.program_filepath)
             compile_src.wait()
