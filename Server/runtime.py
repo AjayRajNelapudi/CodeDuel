@@ -1,14 +1,11 @@
 from subprocess import run, Popen
 import os
-try:
+from contextlib import suppress
+with suppress(Exception):
     from Server import database
-except:
-    pass
 
-try:
+with suppress(Exception):
     import database
-except:
-    pass
 
 if os.name == 'nt':
     separator = "\\"
