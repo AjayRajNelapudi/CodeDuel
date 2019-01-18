@@ -19,7 +19,6 @@ CREATE TABLE Problem (
     p_id INTEGER PRIMARY KEY,
     c_id INTEGER NOT NULL,
     p_title VARCHAR(20) NOT NULL,
-    p_description VARCHAR(5000) NOT NULL,
     p_rating INTEGER
 );
 
