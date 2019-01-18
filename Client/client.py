@@ -50,13 +50,29 @@ def get_duel_scores(c_id):
     scores = server.recv(1024).decode()
     return scores
 
+def print_help():
+    help = '''
+To accept a challenge:
+python3 client.py <TitleOfTheProblem.txt>
+
+To push a script and get results:
+python3 client.py <id> <filename withe extension
+
+To view yours and your opponent's points:
+python3 client.py <your id> points
+            '''
+    print(help)
+
 
 server = socket.socket()
 hostname, port = 'localhost', 32757
 server.connect((hostname, port))
 
 if len(sys.argv) == 2:
-    accept_challenge(sys.argv[1])
+    if sys.argv[1] == 'help':
+        print_help()
+    else:
+        accept_challenge(sys.argv[1])
 elif len(sys.argv) == 3:
     if sys.argv[2] == 'points':
         scores = get_duel_scores(int(sys.argv[1]))

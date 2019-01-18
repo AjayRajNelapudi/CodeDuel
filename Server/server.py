@@ -1,15 +1,12 @@
 import socket
-try:
+from contextlib import suppress
+with suppress(Exception):
     from Server import runtime
     from Server import database
-except:
-    pass
 
-try:
+with suppress(Exception):
     import runtime
     import database
-except:
-    pass
 
 import threading
 from pyftpdlib.authorizers import DummyAuthorizer
@@ -67,12 +64,15 @@ while True:
 
     conn, addr = server.accept()
     received_message = conn.recv(port).decode()
-    user_type, c_id, request = received_message.split(',')
+    try:
+        user_type, c_id, request = received_message.split(',')
 
-    if user_type == 'client':
-        if request == 'SCORE':
-            duel_scores_thread = threading.Thread(target=duel_scores, args=(conn, c_id))
-            duel_scores_thread.start()
-        else:
-            client_service_thread = threading.Thread(target=client_service, args=(conn, c_id, request))
-            client_service_thread.start()
+        if user_type == 'client':
+            if request == 'SCORE':
+                duel_scores_thread = threading.Thread(target=duel_scores, args=(conn, c_id))
+                duel_scores_thread.start()
+            else:
+                client_service_thread = threading.Thread(target=client_service, args=(conn, c_id, request))
+                client_service_thread.start()
+    except:
+        conn.close()

@@ -48,9 +48,9 @@ def update_score(c_id, t_id, points):
     existence_test = len(conn.fetchall())
 
     if existence_test != 0:
-        query = "UPDATE Score SET points = %s WHERE c_id = %s AND t_id = %s" % (points, c_id, t_id)
+        query = "UPDATE Score SET points = %s, s_timestamp = NOW() WHERE c_id = %s AND t_id = %s" % (points, c_id, t_id)
     else:
-        query = "INSERT INTO Score VALUES (%s, %s, %s)" % (c_id, t_id, points)
+        query = "INSERT INTO Score VALUES (%s, %s, %s, NOW())" % (c_id, t_id, points)
     conn.execute(query)
 
 def get_pid(p_title):
@@ -118,3 +118,9 @@ def get_all_cid():
     conn.execute(query)
     all_cid = conn.fetchall()
     return all_cid
+
+def get_testcase_points(t_id):
+    query = "SELECT t_points FROM Testcase WHERE t_id = %s" % (t_id)
+    conn.execute(query)
+    t_points = conn.fetchone()[0]
+    return t_points

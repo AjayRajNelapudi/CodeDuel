@@ -29,7 +29,8 @@ CREATE TABLE Testcase (
     t_id INTEGER PRIMARY KEY,
     p_id INTEGER NOT NULL,
     t_inputfile VARCHAR(20) NOT NULL,
-    t_outputfile VARCHAR(20) NOT NULL
+    t_outputfile VARCHAR(20) NOT NULL,
+    t_points INTEGER NOT NULL
 );
 
 ALTER TABLE Testcase
@@ -38,7 +39,8 @@ ADD CONSTRAINT p_id_fk_testcase FOREIGN KEY(p_id) REFERENCES Problem(p_id);
 CREATE TABLE Score (
     c_id INTEGER NOT NULL,
     t_id INTEGER NOT NULL,
-    points INTEGER NOT NULL
+    points INTEGER NOT NULL,
+    s_timestamp TIMESTAMP NOT NULL
 );
 
 ALTER TABLE Score

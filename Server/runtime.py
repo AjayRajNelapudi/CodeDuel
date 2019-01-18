@@ -59,7 +59,7 @@ class Run_Tests:
             actual_output = actual_output_file.read()
 
             if expected_output.replace('\n', '') == actual_output.replace('\n', ''):
-                points = 10
+                points = database.get_testcase_points(t_id)
                 test_run_status.append('P')
             else:
                 points = 0
