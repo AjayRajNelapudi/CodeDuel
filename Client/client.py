@@ -74,7 +74,7 @@ if len(sys.argv) == 2:
     else:
         accept_challenge(sys.argv[1])
 elif len(sys.argv) == 3:
-    if sys.argv[2] == 'SCORE':
+    if sys.argv[2] == 'points':
         scores = get_duel_scores(int(sys.argv[1]))
         print(scores)
     else:
