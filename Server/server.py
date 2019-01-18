@@ -1,4 +1,5 @@
 import socket
+import datetime
 try:
     from Server import runtime
     from Server import database
@@ -38,7 +39,7 @@ server.bind((hostname, port))
 server.listen(10)
 
 while True:
-    def client_service(conn, program_file):
+    def client_service(conn, c_id, program_file):
         src_path = database.get_directory_path('src')
         test_path = database.get_directory_path('test')
         p_id = database.get_pid(program_file.split('.')[0])
@@ -57,5 +58,5 @@ while True:
     user_type, c_id, request = received_message.split(',')
 
     if user_type == 'client':
-        client_service_thread = threading.Thread(target=client_service, args=(conn, request))
+        client_service_thread = threading.Thread(target=client_service, args=(conn, c_id, request))
         client_service_thread.start()

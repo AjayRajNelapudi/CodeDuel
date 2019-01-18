@@ -38,7 +38,7 @@ def push_file(c_id, program_file):
     push_file = File_Transfer(c_id)
     push_file.upload_file(program_file)
 
-    message = 'client,' + str(c_id) + program_file
+    message = 'client,' + str(c_id) + ',' + program_file
     server.send(message.encode())
 
     test_run_status = server.recv(1024)
