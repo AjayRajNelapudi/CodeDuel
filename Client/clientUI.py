@@ -103,7 +103,10 @@ contestant_label.place(x=250, y=70, width=300, height=50)
 
 opponent_var = StringVar()
 opponent_label = Label(home_frame, textvar=opponent_var, anchor=W, bg='light green')
-opponent_label.place(x=250, y=120, width=300, height=50)
+opponent_label.place(x=250, y=130, width=300, height=50)
+
+refresh_button = Button(home_frame, text="Refresh", command=duel_helper.update_scoreboard)
+refresh_button.place(x=250, y=180, width=300, height=50)
 
 program_file_label = Label(home_frame, text="Program File")
 program_file_label.place(x=50, y=300, width=150, height=50)

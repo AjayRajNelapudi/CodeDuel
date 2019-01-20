@@ -49,7 +49,8 @@ class Run_Tests:
                         cwd=self.program_filepath,
                         input=input_data,
                         encoding='ascii',
-                        stdout=actual_output_file
+                        stdout=actual_output_file,
+                        timeout=5
                     )
 
         return status.returncode
