@@ -1,4 +1,4 @@
-Manually insert the data into database using MySQL commands and queries.
+Manually insert the data into database using MySQL statements.
 
 To setup file-system:
 python3 ServerAid/buildfiles.py

@@ -79,6 +79,17 @@ def get_duel_scores(c_id):
 
 def print_help():
     help = '''
+Manually insert the data into database using MySQL statements.
+
+To setup file-system:
+python3 ServerAid/buildfiles.py
+
+To run the server:
+python3 Server/server.py
+
+To confiure your id:
+python3 client.py config <id>
+
 To accept a challenge:
 python3 client.py pull <TitleOfTheProblem.txt>
 
