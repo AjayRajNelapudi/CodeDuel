@@ -83,18 +83,16 @@ while True:
     received_message = conn.recv(port).decode()
 
     try:
-        user_type, c_id, file = received_message.split(',')
+        action, c_id, specs = received_message.split(',')
 
-        if user_type == 'client':
-            if file == 'SCORE':
-                duel_scores_thread = threading.Thread(target=duel_scores, args=(conn, c_id))
-                duel_scores_thread.start()
-            else:
-                client_service_thread = threading.Thread(target=client_service, args=(conn, c_id, file))
-                client_service_thread.start()
-
-        elif user_type == 'validate':
-            validate_thread = threading.Thread(target=validate_login, args=(conn, c_id, file))
+        if action == 'score':
+            duel_scores_thread = threading.Thread(target=duel_scores, args=(conn, c_id))
+            duel_scores_thread.start()
+        elif action == 'test':
+            client_service_thread = threading.Thread(target=client_service, args=(conn, c_id, specs))
+            client_service_thread.start()
+        elif action == 'validate':
+            validate_thread = threading.Thread(target=validate_login, args=(conn, c_id, specs))
             validate_thread.start()
     except:
         conn.close()

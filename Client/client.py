@@ -55,7 +55,7 @@ def push_file(c_id, program_file):
     push_file = File_Transfer(c_id)
     push_file.upload_file(program_file)
 
-    message = 'client,' + str(c_id) + ',' + program_file
+    message = 'test,' + str(c_id) + ',' + program_file
     server.send(message.encode())
 
     test_run_status = server.recv(1024)
@@ -71,14 +71,11 @@ def get_duel_scores(c_id):
     hostname, port = 'localhost', 32757
     server.connect((hostname, port))
 
-    message = 'client,' + str(c_id) + ',' + 'SCORE'
+    message = 'score,' + str(c_id) + ','
     server.send(message.encode())
     scores = server.recv(1024).decode()
     server.close()
     return scores
-
-def get_cid():
-    pass
 
 def print_help():
     help = '''
