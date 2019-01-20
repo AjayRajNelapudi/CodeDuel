@@ -2,6 +2,7 @@ import sys
 import socket
 from ftplib import FTP
 import os
+import json
 
 if os.name == 'nt':
     separator = '\\'
@@ -23,7 +24,8 @@ class File_Transfer:
         self.ftp.storbinary('STOR ' + filename, open(filename, 'rb'))
 
     def download_file(self, filename):
-        self.ftp.cwd('documents/codeduelcursors2019/spec')
+        file, extension = filename.split('.')
+        self.ftp.cwd('documents/codeduelcursors2019/spec' + separator + file)
         localfile = open(filename, 'wb')
         self.ftp.retrbinary('RETR ' + filename, localfile.write, 1024)
         localfile.close()
@@ -75,32 +77,59 @@ def get_duel_scores(c_id):
     server.close()
     return scores
 
+def get_cid():
+    pass
+
 def print_help():
     help = '''
 To accept a challenge:
-python3 client.py <TitleOfTheProblem.txt>
+python3 client.py pull <TitleOfTheProblem.txt>
 
 To push a script and get results:
-python3 client.py <id> <filename with extension>
+python3 client.py push <filename with extension>
 
 To view yours and your opponent's points:
-python3 client.py <your id> points
+python3 client.py points
             '''
     print(help)
 
-if __name__ == '__main__':
+def configure(c_id):
+    metadata = dict()
+    metadata['c_id'] = c_id
+    with open('metadata.json', 'w') as metadata_file:
+        json.dump(metadata, metadata_file)
 
-    if len(sys.argv) == 2:
-        if sys.argv[1] == 'help':
-            print_help()
-        else:
-            accept_challenge(sys.argv[1])
-    elif len(sys.argv) == 3:
-        if sys.argv[2] == 'points':
-            scores = get_duel_scores(int(sys.argv[1]))
-            print(scores)
-        else:
-            test_run_status = push_file(int(sys.argv[1]), sys.argv[2])
+def read_c_id(metadata_filename):
+    try:
+        with open(metadata_filename) as metadata_file:
+            metadata = json.load(metadata_file)
+            c_id = metadata['c_id']
+        return c_id
+    except:
+        print('config before first use')
+
+if __name__ == '__main__':
+    if len(sys.argv) == 1:
+        print("Wrong usage")
+        sys.exit(0)
+
+    argc = len(sys.argv)
+    if sys.argv[1] == 'push' and argc > 2:
+        c_id = read_c_id('metadata.json')
+        for i in range(2, argc):
+            test_run_status = push_file(c_id, sys.argv[i])
             print(test_run_status)
+    elif sys.argv[1] == 'pull' and argc == 3:
+        c_id = read_c_id('metadata.json')
+        accept_challenge(sys.argv[2])
+    elif sys.argv[1] == 'points' and argc == 2:
+        c_id = read_c_id('metadata.json')
+        points = get_duel_scores(c_id)
+        print(points)
+    elif sys.argv[1] == 'config' and argc == 3:
+        configure(int(sys.argv[2]))
     else:
-        print('Incorrect no of args')
+        print('Incorrect args usage')
+        print_help()
+
+

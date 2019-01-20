@@ -6,11 +6,14 @@ python3 ServerAid/buildfiles.py
 To run the server:
 python3 Server/server.py
 
+To confiure your id:
+python3 client.py config <id>
+
 To accept a challenge:
-python3 client.py <TitleOfTheProblem.txt>
+python3 client.py pull <TitleOfTheProblem.txt>
 
 To push a script and get results:
-python3 client.py <id> <filename with extension>
+python3 client.py push <filename with extension>
 
 To view yours and your opponent's points:
-python3 client.py <your id> points
+python3 client.py points
