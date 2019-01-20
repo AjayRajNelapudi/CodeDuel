@@ -9,6 +9,7 @@ CREATE TABLE Directory (
 
 CREATE TABLE Contestant (
     c_id INTEGER PRIMARY KEY,
+    password VARCHAR(20) NOT NULL,
     reg_id VARCHAR(20) NOT NULL,
     c_name VARCHAR(50) NOT NULL,
     c_college VARCHAR(10) NOT NULL,

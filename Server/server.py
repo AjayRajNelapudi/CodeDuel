@@ -69,6 +69,16 @@ while True:
 
         conn.close()
 
+    def validate_login(conn, c_id, password):
+        if database.validate_login(c_id, password):
+            message = 'success'
+        else:
+            message = 'fail'
+
+        conn.send(message.encode())
+        conn.close()
+
+
     conn, addr = server.accept()
     received_message = conn.recv(port).decode()
     try:
@@ -81,5 +91,9 @@ while True:
             else:
                 client_service_thread = threading.Thread(target=client_service, args=(conn, c_id, file))
                 client_service_thread.start()
+
+        elif user_type == 'validate':
+            validate_thread = threading.Thread(target=validate_login, args=(conn, c_id, file))
+            validate_thread.start()
     except:
         conn.close()

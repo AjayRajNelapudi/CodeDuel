@@ -11,6 +11,12 @@ database.autocommit(True)
 conn = database.cursor()
 conn.execute('USE CodeDuel')
 
+def validate_login(c_id, password):
+    query = "SELECT * FROM Contestant where c_id = %s and password = '%s'" % (c_id, password)
+    if conn.execute(query) == 1:
+        return True
+    return False
+
 def get_contestant_name(c_id):
     query = "SELECT c_name FROM Contestant WHERE c_id = %s" % (c_id)
     conn.execute(query)

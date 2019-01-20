@@ -1,9 +1,9 @@
 insert into contestant
     values
-    (1, '316126510034', 'Ajay Raj Nelapudi', 'ANITS', 3),
-    (2, '316126510050', 'Shiv Shankar Singh', 'ANITS', 3),
-    (3, '901290328430', 'Raghu Mylapilli', 'GVP', 3),
-    (4, '786230304943', 'Sai Pranav Nistala', 'AU', 3);
+    (1, 'key', '316126510034', 'Ajay Raj Nelapudi', 'ANITS', 3),
+    (2, 'key', '316126510050', 'Shiv Shankar Singh', 'ANITS', 3),
+    (3, 'key', '901290328430', 'Raghu Mylapilli', 'GVP', 3),
+    (4, 'key', '786230304943', 'Sai Pranav Nistala', 'AU', 3);
 
 insert into duel
     values

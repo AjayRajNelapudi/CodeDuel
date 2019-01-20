@@ -30,6 +30,15 @@ class File_Transfer:
     def __del__(self):
         self.ftp.quit()
 
+def validate_login(c_id, password):
+    message = 'validate,' + str(c_id) + ',' + password
+    server.send(message.encode())
+
+    response = server.recv(1024)
+    if response.decode() == 'success':
+        return True
+    return False
+
 def push_file(c_id, program_file):
     push_file = File_Transfer(c_id)
     push_file.upload_file(program_file)
@@ -63,24 +72,25 @@ python3 client.py <your id> points
             '''
     print(help)
 
-
 server = socket.socket()
 hostname, port = 'localhost', 32757
 server.connect((hostname, port))
 
-if len(sys.argv) == 2:
-    if sys.argv[1] == 'help':
-        print_help()
-    else:
-        accept_challenge(sys.argv[1])
-elif len(sys.argv) == 3:
-    if sys.argv[2] == 'points':
-        scores = get_duel_scores(int(sys.argv[1]))
-        print(scores)
-    else:
-        test_run_status = push_file(int(sys.argv[1]), sys.argv[2])
-        print(test_run_status)
-else:
-    print('Incorrect no of args')
+if __name__ == '__main__':
 
-server.close()
+    if len(sys.argv) == 2:
+        if sys.argv[1] == 'help':
+            print_help()
+        else:
+            accept_challenge(sys.argv[1])
+    elif len(sys.argv) == 3:
+        if sys.argv[2] == 'points':
+            scores = get_duel_scores(int(sys.argv[1]))
+            print(scores)
+        else:
+            test_run_status = push_file(int(sys.argv[1]), sys.argv[2])
+            print(test_run_status)
+    else:
+        print('Incorrect no of args')
+
+#server.close()
