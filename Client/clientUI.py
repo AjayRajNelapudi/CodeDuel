@@ -1,29 +1,76 @@
 from tkinter import *
 from contextlib import suppress
+import os
+
+if os.name == 'nt':
+    separator = '\\'
+else:
+    separator = '/'
+
+
+class Duel_Helper:
+    def __init__(self):
+        self.c_id = 0
+
+    def file_dialog_box(self):
+        from tkinter import Tk
+        from tkinter.filedialog import askopenfilename
+
+        Tk().withdraw()
+        self.file_path = askopenfilename()
+
+        global var
+        var.set(self.file_path)
+
+    def separate_dir_file(self):
+        dir_list = self.file_path.split(separator)
+        self.dir = separator.join(dir_list[:-1])
+        self.file = dir_list[-1]
+
+    def update_scoreboard(self):
+        client = get_client()
+        scoreboard = client.get_duel_scores(self.c_id)
+        global contestant_var, opponent_var
+
+        contestant_score, opponent_score = scoreboard.split('\n')
+        contestant_var.set(contestant_score.replace('->', ''))
+        opponent_var.set(opponent_score.replace('->', ''))
+
+    def request_upload(self):
+        self.separate_dir_file()
+        client = get_client()
+        #os.chdir(self.dir)
+        client.push_file(self.c_id, self.file)
+        self.update_scoreboard()
+
+duel_helper = Duel_Helper()
+
+def get_client():
+    try:
+        import client
+        return client
+    except:
+        with suppress(Exception):
+            from Client import client
+            return client
 
 def validate_login():
     c_id = c_id_entry.get()
     password = password_entry.get()
 
-    try:
-        import client
-        if client.validate_login(c_id, password):
-            login_frame.destroy()
-            home_frame.pack()
-            home_frame.tkraise()
-    except:
-        with suppress(Exception):
-            from Client import client
-            if client.validate_login(c_id, password):
-                login_frame.destroy()
-                home_frame.pack()
-                home_frame.tkraise()
+    duel_helper.c_id = c_id
+
+    client = get_client()
+    if client.validate_login(c_id, password):
+        login_frame.destroy()
+        home_frame.pack()
+        home_frame.tkraise()
 
 root = Tk()
 root.title("CodeDuel")
 
-login_frame = Frame(root, width=800, height=600)
-home_frame = Frame(root, width=800, height=600)
+login_frame = Frame(root, width=800, height=400)
+home_frame = Frame(root, width=800, height=400)
 
 login_frame.pack()
 
@@ -44,7 +91,31 @@ login_button.place(x=325, y=250, width=200, height=50)
 
 login_frame.tkraise()
 
-text = Label(home_frame, text = "Logged In")
-text.pack()
+
+# ********************* HOME PAGE ************************* #
+
+scoreboard_label = Label(home_frame, text="Scoreboard")
+scoreboard_label.place(x=250, y=30, width=300, height=20)
+
+contestant_var = StringVar()
+contestant_label = Label(home_frame, textvar=contestant_var, anchor=W, bg='light blue')
+contestant_label.place(x=250, y=70, width=300, height=50)
+
+opponent_var = StringVar()
+opponent_label = Label(home_frame, textvar=opponent_var, anchor=W, bg='light green')
+opponent_label.place(x=250, y=120, width=300, height=50)
+
+program_file_label = Label(home_frame, text="Program File")
+program_file_label.place(x=50, y=300, width=150, height=50)
+
+var = StringVar()
+program_file_entry = Entry(home_frame, textvar=var)
+program_file_entry.place(x=200, y=310, width=400, height=30)
+
+program_file_button = Button(home_frame, text="Select File", command=duel_helper.file_dialog_box)
+program_file_button.place(x=620, y=300, width=150, height=50)
+
+push_file_button = Button(home_frame, text="Push File", command=duel_helper.request_upload)
+push_file_button.place(x=200, y = 350, width=100, height=50)
 
 root.mainloop()

@@ -18,7 +18,8 @@ class File_Transfer:
         #self.ftp.retrlines('LIST')
 
     def upload_file(self, filename):
-        self.ftp.cwd('documents/codeduelcursors2019/src' + separator + str(self.c_id) + separator + filename.split('.')[0])
+        file, dir = filename.split('.')
+        self.ftp.cwd('documents/codeduelcursors2019/src' + separator + str(self.c_id) + separator + file)
         self.ftp.storbinary('STOR ' + filename, open(filename, 'rb'))
 
     def download_file(self, filename):
@@ -31,15 +32,24 @@ class File_Transfer:
         self.ftp.quit()
 
 def validate_login(c_id, password):
+    server = socket.socket()
+    hostname, port = 'localhost', 32757
+    server.connect((hostname, port))
+
     message = 'validate,' + str(c_id) + ',' + password
     server.send(message.encode())
 
     response = server.recv(1024)
+    server.close()
     if response.decode() == 'success':
         return True
     return False
 
 def push_file(c_id, program_file):
+    server = socket.socket()
+    hostname, port = 'localhost', 32757
+    server.connect((hostname, port))
+
     push_file = File_Transfer(c_id)
     push_file.upload_file(program_file)
 
@@ -47,6 +57,7 @@ def push_file(c_id, program_file):
     server.send(message.encode())
 
     test_run_status = server.recv(1024)
+    server.close()
     return 'Test Run: ' + test_run_status.decode()
 
 def accept_challenge(p_title):
@@ -54,9 +65,14 @@ def accept_challenge(p_title):
     pull_file.download_file(p_title)
 
 def get_duel_scores(c_id):
+    server = socket.socket()
+    hostname, port = 'localhost', 32757
+    server.connect((hostname, port))
+
     message = 'client,' + str(c_id) + ',' + 'SCORE'
     server.send(message.encode())
     scores = server.recv(1024).decode()
+    server.close()
     return scores
 
 def print_help():
@@ -71,10 +87,6 @@ To view yours and your opponent's points:
 python3 client.py <your id> points
             '''
     print(help)
-
-server = socket.socket()
-hostname, port = 'localhost', 32757
-server.connect((hostname, port))
 
 if __name__ == '__main__':
 
@@ -92,5 +104,3 @@ if __name__ == '__main__':
             print(test_run_status)
     else:
         print('Incorrect no of args')
-
-#server.close()

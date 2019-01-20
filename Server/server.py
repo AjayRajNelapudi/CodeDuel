@@ -81,6 +81,7 @@ while True:
 
     conn, addr = server.accept()
     received_message = conn.recv(port).decode()
+
     try:
         user_type, c_id, file = received_message.split(',')
 
