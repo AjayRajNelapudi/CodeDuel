@@ -1,3 +1,4 @@
+#!/Library/Frameworks/Python.framework/Versions/3.6/Python
 import sys
 import socket
 from ftplib import FTP
@@ -20,7 +21,10 @@ class File_Transfer:
 
     def upload_file(self, filename):
         file, dir = filename.split('.')
-        self.ftp.cwd('documents/codeduelcursors2019/src' + separator + str(self.c_id) + separator + file)
+        try:
+            self.ftp.cwd('documents/codeduelcursors2019/src' + separator + str(self.c_id) + separator + file)
+        except:
+            self.ftp.cwd('documents/codeduelcursors2019/src' + separator + str(self.c_id))
         self.ftp.storbinary('STOR ' + filename, open(filename, 'rb'))
 
     def download_file(self, filename):
@@ -35,6 +39,7 @@ class File_Transfer:
 
 def validate_login(c_id, password):
     server = socket.socket()
+    server.timeout(15)
     hostname, port = 'localhost', 32757
     server.connect((hostname, port))
 
@@ -49,6 +54,7 @@ def validate_login(c_id, password):
 
 def push_file(c_id, program_file):
     server = socket.socket()
+    server.timeout(15)
     hostname, port = 'localhost', 32757
     server.connect((hostname, port))
 
@@ -68,6 +74,7 @@ def accept_challenge(p_title):
 
 def get_duel_scores(c_id):
     server = socket.socket()
+    server.timeout(15)
     hostname, port = 'localhost', 32757
     server.connect((hostname, port))
 
