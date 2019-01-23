@@ -37,57 +37,83 @@ class File_Transfer:
     def __del__(self):
         self.ftp.quit()
 
-def validate_login(c_id, password):
-    server = socket.socket()
-    server.timeout(15)
-    hostname, port = 'localhost', 32757
-    server.connect((hostname, port))
+class Command:
+    def __init__(self):
+        self.server = socket.socket()
+        hostname, port = 'localhost', 32757
+        self.server.connect((hostname, port))
 
-    message = 'validate,' + str(c_id) + ',' + password
-    server.send(message.encode())
+        try:
+            self.read_c_id('metadata.json')
+        except:
+            pass
 
-    response = server.recv(1024)
-    server.close()
-    if response.decode() == 'success':
-        return True
-    return False
+    def read_c_id(self, metadata_filename):
+        with open(metadata_filename) as metadata_file:
+            metadata = json.load(metadata_file)
+            c_id = metadata['c_id']
+        self.c_id = c_id
 
-def push_file(c_id, program_file):
-    server = socket.socket()
-    server.timeout(15)
-    hostname, port = 'localhost', 32757
-    server.connect((hostname, port))
+    def validate_login(self, c_id, password):
+        message = 'validate,' + str(c_id) + ',' + password
+        self.server.send(message.encode())
 
-    push_file = File_Transfer(c_id)
-    push_file.upload_file(program_file)
+        response = self.server.recv(1024)
 
-    message = 'test,' + str(c_id) + ',' + program_file
-    server.send(message.encode())
+        if response.decode() == 'success':
+            return True
+        return False
 
-    test_run_status = server.recv(1024)
-    server.close()
-    return 'Test Run: ' + test_run_status.decode()
 
-def accept_challenge(p_title):
-    pull_file = File_Transfer(-1)
-    pull_file.download_file(p_title)
+    def configure(self, c_id, password):
+        if not self.validate_login(c_id, password):
+            print('bad credentials')
 
-def get_duel_scores(c_id):
-    server = socket.socket()
-    server.timeout(15)
-    hostname, port = 'localhost', 32757
-    server.connect((hostname, port))
+        self.c_id = c_id
+        metadata = dict()
+        metadata['c_id'] = c_id
+        metadata['password'] = password
+        with open('metadata.json', 'w') as metadata_file:
+            json.dump(metadata, metadata_file)
 
-    message = 'score,' + str(c_id) + ','
-    server.send(message.encode())
-    scores = server.recv(1024).decode()
-    server.close()
-    return scores
+    def push_file(self, program_file):
+        try:
+            self.read_c_id('metadata.json')
+            push_file = File_Transfer(self.c_id)
+            push_file.upload_file(program_file)
 
-def print_help():
-    help = '''
+            message = 'test,' + str(self.c_id) + ',' + program_file
+            self.server.send(message.encode())
+
+            test_run_status = self.server.recv(1024)
+            return 'Test Run: ' + test_run_status.decode()
+        except:
+            print('Config before use')
+
+    def accept_challenge(self, p_title):
+        try:
+            self.read_c_id('metadata.json')
+            pull_file = File_Transfer(self.c_id)
+            pull_file.download_file(p_title)
+        except:
+            print('Config before use')
+
+    def get_duel_scores(self):
+        try:
+            self.read_c_id('metadata.json')
+            message = 'score,' + str(self.c_id) + ','
+            self.server.send(message.encode())
+            scores = self.server.recv(1024).decode()
+
+            return scores
+        except:
+            print('Config before use')
+
+    def print_help(self):
+        help = '''
 Manually insert the data into database using MySQL statements.
 
+Navigate to folder containting the source code:
 To setup file-system:
 python3 ServerAid/buildfiles.py
 
@@ -105,46 +131,34 @@ python3 client.py push <filename with extension>
 
 To view yours and your opponent's points:
 python3 client.py points
-            '''
-    print(help)
+                '''
+        print(help)
 
-def configure(c_id):
-    metadata = dict()
-    metadata['c_id'] = c_id
-    with open('metadata.json', 'w') as metadata_file:
-        json.dump(metadata, metadata_file)
-
-def read_c_id(metadata_filename):
-    try:
-        with open(metadata_filename) as metadata_file:
-            metadata = json.load(metadata_file)
-            c_id = metadata['c_id']
-        return c_id
-    except:
-        print('config before first use')
+    def __del__(self):
+        self.server.close()
 
 if __name__ == '__main__':
     if len(sys.argv) == 1:
         print("Wrong usage")
         sys.exit(0)
 
+    cmd = Command()
     argc = len(sys.argv)
     if sys.argv[1] == 'push' and argc > 2:
-        c_id = read_c_id('metadata.json')
         for i in range(2, argc):
-            test_run_status = push_file(c_id, sys.argv[i])
+            test_run_status = cmd.push_file(sys.argv[i])
             print(test_run_status)
     elif sys.argv[1] == 'pull' and argc == 3:
-        c_id = read_c_id('metadata.json')
-        accept_challenge(sys.argv[2])
+        cmd.accept_challenge(sys.argv[2])
     elif sys.argv[1] == 'points' and argc == 2:
-        c_id = read_c_id('metadata.json')
-        points = get_duel_scores(c_id)
+        points = cmd.get_duel_scores()
         print(points)
-    elif sys.argv[1] == 'config' and argc == 3:
-        configure(int(sys.argv[2]))
+    elif sys.argv[1] == 'config' and argc == 4:
+        cmd.configure(int(sys.argv[2]), sys.argv[3])
+    elif sys.argv[1] == 'help' and argc == 2:
+        cmd.print_help()
     else:
         print('Incorrect args usage')
-        print_help()
+        cmd.print_help()
 
 
