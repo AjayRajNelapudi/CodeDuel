@@ -127,7 +127,7 @@ To run the server:
 python3 Server/server.py
 
 To confiure your id:
-python3 client.py config <id>
+python3 client.py config <id> <password>
 
 To accept a challenge:
 python3 client.py pull <TitleOfTheProblem.txt>
