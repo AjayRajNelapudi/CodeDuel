@@ -68,6 +68,7 @@ class Command:
     def configure(self, c_id, password):
         if not self.validate_login(c_id, password):
             print('bad credentials')
+            return
 
         self.c_id = c_id
         metadata = dict()
@@ -79,6 +80,11 @@ class Command:
     def push_file(self, program_file):
         try:
             self.read_c_id('metadata.json')
+        except:
+            print('Config before use')
+            return
+
+        try:
             push_file = File_Transfer(self.c_id)
             push_file.upload_file(program_file)
 
@@ -88,7 +94,7 @@ class Command:
             test_run_status = self.server.recv(1024)
             return 'Test Run: ' + test_run_status.decode()
         except:
-            print('Config before use')
+            print('File Not Found')
 
     def accept_challenge(self, p_title):
         try:
@@ -147,7 +153,8 @@ if __name__ == '__main__':
     if sys.argv[1] == 'push' and argc > 2:
         for i in range(2, argc):
             test_run_status = cmd.push_file(sys.argv[i])
-            print(test_run_status)
+            if test_run_status is not None:
+                print(test_run_status)
     elif sys.argv[1] == 'pull' and argc == 3:
         cmd.accept_challenge(sys.argv[2])
     elif sys.argv[1] == 'points' and argc == 2:
