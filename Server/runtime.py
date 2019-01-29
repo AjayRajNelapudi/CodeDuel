@@ -20,6 +20,7 @@ class Run_Tests:
         self.program_filepath = program_filepath + separator + str(self.c_id) + separator + self.filename
         self.io_filepath = io_filepath + separator + self.program_file.split('.')[0]
         self.input_output = input_output
+        self.codeduel_db = database.CodeDuel_Database()
 
     def get_compiler_runtime_env(self):
         if self.extension == 'c':
@@ -74,12 +75,12 @@ class Run_Tests:
             actual_output = actual_output_file.read()
 
             if expected_output.replace('\n', '') == actual_output.replace('\n', ''):
-                points = database.get_testcase_points(t_id)
+                points = self.codeduel_db.get_testcase_points(t_id)
                 test_run_status.append('P')
             else:
                 points = 0
                 test_run_status.append('F')
-            database.update_score(self.c_id, t_id, points)
+            self.codeduel_db.update_score(self.c_id, t_id, points)
 
             input_file.close()
             expected_output_file.close()

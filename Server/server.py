@@ -13,6 +13,8 @@ from pyftpdlib.authorizers import DummyAuthorizer
 from pyftpdlib.handlers import FTPHandler
 from pyftpdlib.servers import FTPServer
 
+codeduel_db = database.CodeDuel_Database()
+
 def ftp_service():
     username = 'ajay'
     port = 12345
@@ -37,17 +39,17 @@ server.listen(10)
 while True:
     def client_service(conn, c_id, program_file):
         try:
-            src_path = database.get_directory_path('src')
-            test_path = database.get_directory_path('test')
-            p_id = database.get_pid(program_file.split('.')[0])
-            test_file_names = database.get_test_filenames(p_id)
+            src_path = codeduel_db.get_directory_path('src')
+            test_path = codeduel_db.get_directory_path('test')
+            p_id = codeduel_db.get_pid(program_file.split('.')[0])
+            test_file_names = codeduel_db.get_test_filenames(p_id)
 
             run = runtime.Run_Tests(c_id, program_file, src_path, test_path, test_file_names)
             test_run_status = run.run_tests()
             test_run_status = ' '.join(test_run_status)
             conn.send(test_run_status.encode())
 
-            duel_id = database.get_duel_id(c_id)
+            duel_id = codeduel_db.get_duel_id(c_id)
             print('\n\n\n')
             print('Duel ID:', duel_id)
             print('Contestant ID:', c_id)
@@ -60,13 +62,13 @@ while True:
 
     def duel_scores(conn, c_id):
         try:
-            opponent_id = database.get_opponent_id(c_id)
+            opponent_id = codeduel_db.get_opponent_id(c_id)
 
-            contestant_name = database.get_contestant_name(c_id)
-            opponent_name = database.get_contestant_name(opponent_id)
+            contestant_name = codeduel_db.get_contestant_name(c_id)
+            opponent_name = codeduel_db.get_contestant_name(opponent_id)
 
-            contestant_score = 0 if database.get_score(c_id) is None else database.get_score(c_id)
-            opponent_score = 0 if database.get_score(opponent_id) is None else database.get_score(opponent_id)
+            contestant_score = 0 if codeduel_db.get_score(c_id) is None else codeduel_db.get_score(c_id)
+            opponent_score = 0 if codeduel_db.get_score(opponent_id) is None else codeduel_db.get_score(opponent_id)
 
             message = contestant_name + ' -> ' + str(contestant_score) + '\n' + opponent_name + ' -> ' + str(opponent_score)
             conn.send(message.encode())
@@ -77,7 +79,7 @@ while True:
 
     def validate_login(conn, c_id, password):
         try:
-            if database.validate_login(c_id, password):
+            if codeduel_db.validate_login(c_id, password):
                 message = 'success'
             else:
                 message = 'fail'
