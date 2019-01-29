@@ -29,7 +29,8 @@ class Duel_Helper:
 
     def update_scoreboard(self):
         client = get_client()
-        scoreboard = client.get_duel_scores(self.c_id)
+        client_command = client.Command()
+        scoreboard = client_command.get_duel_scores()
         global contestant_var, opponent_var
 
         contestant_score, opponent_score = scoreboard.split('\n')
@@ -40,7 +41,8 @@ class Duel_Helper:
         self.separate_dir_file()
         client = get_client()
         #os.chdir(self.dir)
-        client.push_file(self.c_id, self.file)
+        client_command = client.Command()
+        client_command.push_file(self.file)
         self.update_scoreboard()
 
 duel_helper = Duel_Helper()
@@ -61,7 +63,8 @@ def validate_login():
     duel_helper.c_id = c_id
 
     client = get_client()
-    if client.validate_login(c_id, password):
+    client_command = client.Command()
+    if client_command.validate_login(c_id, password):
         login_frame.destroy()
         home_frame.pack()
         home_frame.tkraise()
