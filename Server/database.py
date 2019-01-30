@@ -9,10 +9,13 @@ else:
 class CodeDuel_Database():
 
     def __init__(self):
-        self.database = pymysql.connect('localhost', 'root', 'anitscse034')
-        self.database.autocommit(True)
-        self.conn = self.database.cursor()
-        self.conn.execute('USE CodeDuel')
+        try:
+            self.database = pymysql.connect('localhost', 'root', 'anitscse034')
+            self.database.autocommit(True)
+            self.conn = self.database.cursor()
+            self.conn.execute('USE CodeDuel')
+        except:
+            print('Database connection failed')
 
     def validate_login(self, c_id, password):
         query = "SELECT * FROM Contestant where c_id = %s and password = '%s'" % (c_id, password)
