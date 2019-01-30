@@ -13,7 +13,11 @@ from pyftpdlib.authorizers import DummyAuthorizer
 from pyftpdlib.handlers import FTPHandler
 from pyftpdlib.servers import FTPServer
 
-codeduel_db = database.CodeDuel_Database()
+try:
+    codeduel_db = database.CodeDuel_Database()
+except:
+    print('Database Connection Failed')
+    exit(0)
 
 def ftp_service():
     username = 'ajay'
