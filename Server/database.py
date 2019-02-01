@@ -7,7 +7,6 @@ else:
     separator = '/'
 
 class CodeDuel_Database():
-
     def __init__(self):
         self.database = pymysql.connect('localhost', 'root', 'anitscse034')
         self.database.autocommit(True)
