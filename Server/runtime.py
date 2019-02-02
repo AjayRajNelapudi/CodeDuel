@@ -1,4 +1,4 @@
-from subprocess import run, Popen
+from subprocess import run, Popen, PIPE
 import os
 from contextlib import suppress
 with suppress(Exception):
@@ -39,6 +39,10 @@ class Run_Tests:
         elif self.compiler in {'python', 'python3'}:
             self.run_command = ['python3', self.filename]
 
+    def set_safe_limits(self):
+        # read resource module and set limits accordingly
+        pass
+
     def compile(self):
         if not self.compiler in {'python', 'python3'}:
             compile_src = Popen([self.compiler, self.program_file], cwd=self.program_filepath)
@@ -51,7 +55,8 @@ class Run_Tests:
                         input=input_data,
                         encoding='ascii',
                         stdout=actual_output_file,
-                        timeout=5
+                        timeout=5,
+                        preexec_fn=self.set_safe_limits()
                     )
 
         return status.returncode
