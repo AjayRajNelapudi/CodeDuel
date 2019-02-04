@@ -73,7 +73,7 @@ class CodeDuel_Database():
                     FROM Contestant C
                     ORDER BY Total DESC '''
 
-    def make_leaderboard(self):
+    def make_leaderboard_depricated(self):
         leaderboard = []
         query = "SELECT c_id_A, c_id_B FROM Duel"
         self.conn.execute(query)
@@ -101,6 +101,16 @@ class CodeDuel_Database():
 
         leaderboard.sort(key = lambda x: x[1])
 
+        return leaderboard
+
+    def make_leaderboard(self):
+        query = ''' SELECT C.c_id, C.c_name, (  SELECT sum(S.points)
+                                        FROM Score S
+                                        WHERE C.c_id = S.c_id   ) AS Total
+                    FROM Contestant C
+                    ORDER BY Total DESC '''
+        self.conn.execute(query)
+        leaderboard = self.conn.fetchall()
         return leaderboard
 
     def get_opponent_id(self, c_id):

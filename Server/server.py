@@ -58,7 +58,7 @@ class Server:
 
     def duel_scores(self):
         try:
-            opponent_id = self.database.get_opponent_id(self.c_id)
+            '''opponent_id = self.database.get_opponent_id(self.c_id)
 
             contestant_name = self.database.get_contestant_name(self.c_id)
             opponent_name = self.database.get_contestant_name(opponent_id)
@@ -66,10 +66,16 @@ class Server:
             contestant_score = 0 if self.database.get_score(self.c_id) is None else self.database.get_score(self.c_id)
             opponent_score = 0 if self.database.get_score(opponent_id) is None else self.database.get_score(opponent_id)
 
-            message = contestant_name + ' -> ' + str(contestant_score) + '\n' + opponent_name + ' -> ' + str(opponent_score)
+            message = contestant_name + ' -> ' + str(contestant_score) + '\n' + opponent_name + ' -> ' + str(opponent_score)'''
+            leaderboard = self.database.make_leaderboard()
+            message = ''
+            for contestant in leaderboard:
+                for attribute in contestant:
+                    message += str(attribute) + '\t'
+                message += '\n'
             self.client_conn.send(message.encode())
-        except:
-            print('Error in retrieveing scores. Contact admin', self.c_id)
+        except Error as e:
+            print('Error in retrieveing scores. Contact admin', self.c_id, e)
 
     def validate_login(self):
         try:
