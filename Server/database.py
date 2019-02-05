@@ -73,7 +73,7 @@ class CodeDuel_Database():
                     FROM Contestant C
                     ORDER BY Total DESC '''
 
-    def make_leaderboard_depricated(self):
+    def make_duel_leaderboard(self):
         leaderboard = []
         query = "SELECT c_id_A, c_id_B FROM Duel"
         self.conn.execute(query)
