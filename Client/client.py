@@ -76,6 +76,7 @@ class Command:
         metadata['password'] = password
         with open('metadata.json', 'w') as metadata_file:
             json.dump(metadata, metadata_file)
+        print('Login Successful')
 
     def push_file(self, program_file):
         try:
