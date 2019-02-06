@@ -67,7 +67,7 @@ class Command:
 
     def configure(self, c_id, password):
         if not self.validate_login(c_id, password):
-            print('bad credentials')
+            print('Login Failed. Check Credentails')
             return
 
         self.c_id = c_id
