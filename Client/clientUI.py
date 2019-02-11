@@ -85,8 +85,8 @@ def get_client():
 root = Tk()
 root.title("CodeDuel")
 
-login_background = ImageTk.PhotoImage(Image.open("/Users/ajayraj/Documents/CodeDuel/Resources/background.jpg"))
-home_background = ImageTk.PhotoImage(Image.open("/Users/ajayraj/Documents/CodeDuel/Resources/background.jpg"))
+login_background = ImageTk.PhotoImage(Image.open("background.jpg"))
+home_background = ImageTk.PhotoImage(Image.open("background.jpg"))
 
 login_frame = Frame(root, width=1366, height=768)
 home_frame = Frame(root, width=1366, height=768)
@@ -138,7 +138,7 @@ refresh_button.place(x=900, y=200, width=200, height=25)
 challenge_key_label = Label(home_frame, text="Challenge Key", bg="light blue")
 challenge_key_label.place(x=50, y=50)
 
-challenge_key_entry = Entry(home_frame)
+challenge_key_entry = Entry(home_frame, highlightbackground='#84BEEF')
 challenge_key_entry.place(x=200, y=50, width=300, height=30)
 
 accept_challenge_button = Button(home_frame, text="Accept Challenge", command=duel_helper.accept_challenge, highlightbackground='#84BEEF')
