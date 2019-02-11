@@ -140,19 +140,19 @@ accept_challenge_button = Button(home_frame, text="Accept Challenge", command=du
 accept_challenge_button.place(x=550, y=50, width=200, height=25)
 
 question_text = Text(home_frame)
-question_text.place(x=50, y=100, width = 700, height = 520)
+question_text.place(x=50, y=100, width = 700, height = 480)
 
 program_file_label = Label(home_frame, text="Program File", bg="light blue")
-program_file_label.place(x=50, y=650)
+program_file_label.place(x=50, y=600)
 
 program_file_var = StringVar()
 program_file_entry = Entry(home_frame, textvar=program_file_var, highlightbackground='#84BEEF')
-program_file_entry.place(x=165, y=650, width=400, height=30)
+program_file_entry.place(x=165, y=600, width=400, height=30)
 
 program_file_button = Button(home_frame, text="Select File", command=duel_helper.file_dialog_box, highlightbackground='#84BEEF')
-program_file_button.place(x=600, y=650, width=150, height=25)
+program_file_button.place(x=600, y=600, width=150, height=25)
 
 push_file_button = Button(home_frame, text="Push File", command=duel_helper.request_upload, highlightbackground='#84BEEF')
-push_file_button.place(x=165, y = 675, width=100, height=25)
+push_file_button.place(x=165, y = 660, width=100, height=25)
 
 root.mainloop()
