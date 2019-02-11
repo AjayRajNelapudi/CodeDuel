@@ -1,3 +1,4 @@
+# lsof -n -i4TCP:32757 | grep LISTEN | awk '{ print $2 }' | xargs kill
 import socket
 from contextlib import suppress
 with suppress(Exception):
@@ -33,17 +34,23 @@ class Server:
         ftp_server = FTPServer(("", 1026), handler)
         ftp_server.serve_forever()
 
+    def separate_dir_file(self, filepath):
+        separator = '/'
+        dir_list = filepath.split(separator)
+        self.dir = separator.join(dir_list[:-1])
+        self.file = dir_list[-1]
+
     def client_service(self):
         print('test')
         try:
-            program_file = self.specs
+            self.separate_dir_file(self.specs)
             src_path = self.database.get_directory_path('src')
             test_path = self.database.get_directory_path('test')
-            filename, extension = program_file.split('.')
+            filename, extension = self.file.split('.')
             p_id = self.database.get_pid(filename)
             test_file_names = self.database.get_test_filenames(p_id)
 
-            run = runtime.Run_Tests(self.c_id, program_file, src_path, test_path, test_file_names)
+            run = runtime.Run_Tests(self.c_id, self.file, src_path, test_path, test_file_names)
             test_run_status = run.run_tests()
             test_run_status = ' '.join(test_run_status)
             self.client_conn.send(test_run_status.encode())
