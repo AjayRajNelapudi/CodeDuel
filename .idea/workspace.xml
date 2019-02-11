@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7d505821-e797-4841-a946-302f7c33873d" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Client/SumOfN" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/client.py" afterPath="$PROJECT_DIR$/Client/client.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/clientUI.py" afterPath="$PROJECT_DIR$/Client/clientUI.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/database.py" afterPath="$PROJECT_DIR$/Server/database.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/runtime.py" afterPath="$PROJECT_DIR$/Server/runtime.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/server.py" afterPath="$PROJECT_DIR$/Server/server.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -62,9 +56,11 @@
       <file leaf-file-name="clientUI.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Client/clientUI.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="458">
-              <caret line="125" column="32" lean-forward="false" selection-start-line="125" selection-start-column="32" selection-end-line="125" selection-end-column="32" />
-              <folding />
+            <state relative-caret-position="364">
+              <caret line="143" column="40" lean-forward="false" selection-start-line="143" selection-start-column="40" selection-end-line="143" selection-end-column="40" />
+              <folding>
+                <element signature="e#0#21#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -515,9 +511,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Client/clientUI.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="458">
-          <caret line="125" column="32" lean-forward="false" selection-start-line="125" selection-start-column="32" selection-end-line="125" selection-end-column="32" />
-          <folding />
+        <state relative-caret-position="364">
+          <caret line="143" column="40" lean-forward="false" selection-start-line="143" selection-start-column="40" selection-end-line="143" selection-end-column="40" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
