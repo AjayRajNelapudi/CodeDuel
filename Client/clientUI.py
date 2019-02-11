@@ -61,14 +61,15 @@ class Duel_Helper:
     def accept_challenge(self):
         client = get_client()
         client_command = client.Command()
-        p_title = challenge_key_entry.get()
+        p_title = challenge_key_entry.get() + ".txt"
         client_command.accept_challenge(p_title)
         try:
             question_spec = open(p_title, 'r')
-            question_text.insert(INSERT, question_spec.read())
+            question = question_spec.read()
+            question_text.insert(1.0, question)
             question_spec.close()
         except:
-            question_text.insert(INSERT, "No Such Challenge!")
+            question_text.insert(1.0, "No Such Challenge!")
 
 duel_helper = Duel_Helper()
 
