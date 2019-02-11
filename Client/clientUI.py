@@ -45,6 +45,18 @@ class Duel_Helper:
         client_command.push_file(self.file)
         self.update_scoreboard()
 
+    def accept_challenge(self):
+        client = get_client()
+        client_command = client.Command()
+        p_title = challenge_key_entry.get()
+        client_command.accept_challenge(p_title)
+        try:
+            question_spec = open(p_title, 'r')
+            question_text.insert(INSERT, question_spec.read())
+            question_spec.close()
+        except:
+            question_text.insert(INSERT, "No Such Challenge!")
+
 duel_helper = Duel_Helper()
 
 def get_client():
@@ -72,10 +84,12 @@ def validate_login():
 root = Tk()
 root.title("CodeDuel")
 
-login_frame = Frame(root, width=800, height=400)
-home_frame = Frame(root, width=800, height=400)
+login_frame = Frame(root, width=1366, height=768)
+home_frame = Frame(root, width=1366, height=768)
 
 login_frame.pack()
+
+# ********************* LOGIN PAGE ************************* #
 
 c_id_label = Label(login_frame, text="Contestant ID")
 c_id_label.place(x=200, y=100, width=100, height=30)
@@ -98,30 +112,42 @@ login_frame.tkraise()
 # ********************* HOME PAGE ************************* #
 
 scoreboard_label = Label(home_frame, text="Scoreboard")
-scoreboard_label.place(x=250, y=30, width=300, height=20)
+scoreboard_label.place(x=900, y=40, width=200, height=20)
 
 contestant_var = StringVar()
 contestant_label = Label(home_frame, textvar=contestant_var, anchor=W, bg='light blue')
-contestant_label.place(x=250, y=70, width=300, height=50)
+contestant_label.place(x=900, y=80, width=200, height=50)
 
 opponent_var = StringVar()
 opponent_label = Label(home_frame, textvar=opponent_var, anchor=W, bg='light green')
-opponent_label.place(x=250, y=130, width=300, height=50)
+opponent_label.place(x=900, y=140, width=200, height=50)
 
 refresh_button = Button(home_frame, text="Refresh", command=duel_helper.update_scoreboard)
-refresh_button.place(x=250, y=180, width=300, height=50)
+refresh_button.place(x=900, y=200, width=200, height=50)
+
+challenge_key_label = Label(home_frame, text="Challenge Key")
+challenge_key_label.place(x=0, y=30, width=200, height=50)
+
+challenge_key_entry = Entry(home_frame)
+challenge_key_entry.place(x=200, y=30, width=300, height=50)
+
+accept_challenge_button = Button(home_frame, text="Accept Challenge", command=duel_helper.accept_challenge)
+accept_challenge_button.place(x=550, y=30, width=200, height=50)
+
+question_text = Text(home_frame)
+question_text.place(x=50, y=100, width = 700, height = 520)
 
 program_file_label = Label(home_frame, text="Program File")
-program_file_label.place(x=50, y=300, width=150, height=50)
+program_file_label.place(x=10, y=650, width=150, height=50)
 
 var = StringVar()
 program_file_entry = Entry(home_frame, textvar=var)
-program_file_entry.place(x=200, y=310, width=400, height=30)
+program_file_entry.place(x=150, y=660, width=400, height=30)
 
 program_file_button = Button(home_frame, text="Select File", command=duel_helper.file_dialog_box)
-program_file_button.place(x=620, y=300, width=150, height=50)
+program_file_button.place(x=600, y=650, width=150, height=50)
 
 push_file_button = Button(home_frame, text="Push File", command=duel_helper.request_upload)
-push_file_button.place(x=200, y = 350, width=100, height=50)
+push_file_button.place(x=150, y = 700, width=100, height=50)
 
 root.mainloop()

@@ -34,6 +34,7 @@ class Server:
         ftp_server.serve_forever()
 
     def client_service(self):
+        print('test')
         try:
             program_file = self.specs
             src_path = self.database.get_directory_path('src')
@@ -57,8 +58,9 @@ class Server:
             print('Testrun failed. Contact admin', self.c_id)
 
     def duel_scores(self):
+        print('score')
         try:
-            '''opponent_id = self.database.get_opponent_id(self.c_id)
+            opponent_id = self.database.get_opponent_id(self.c_id)
 
             contestant_name = self.database.get_contestant_name(self.c_id)
             opponent_name = self.database.get_contestant_name(opponent_id)
@@ -66,18 +68,20 @@ class Server:
             contestant_score = 0 if self.database.get_score(self.c_id) is None else self.database.get_score(self.c_id)
             opponent_score = 0 if self.database.get_score(opponent_id) is None else self.database.get_score(opponent_id)
 
-            message = contestant_name + ' -> ' + str(contestant_score) + '\n' + opponent_name + ' -> ' + str(opponent_score)'''
-            leaderboard = self.database.make_leaderboard()
+            message = contestant_name + ' -> ' + str(contestant_score) + '\n' + opponent_name + ' -> ' + str(opponent_score)
+            '''leaderboard = self.database.make_duel_leaderboard()
             message = ''
             for contestant in leaderboard:
                 for attribute in contestant:
                     message += str(attribute) + '\t'
                 message += '\n'
+            '''
             self.client_conn.send(message.encode())
-        except Error as e:
+        except Exception as e:
             print('Error in retrieveing scores. Contact admin', self.c_id, e)
 
     def validate_login(self):
+        print('login')
         try:
             if self.database.validate_login(self.c_id, specs):
                 message = 'success'
@@ -103,6 +107,7 @@ ftp_service_thread.start()
 
 while True:
     conn, addr = server.accept()
+    print('\n', conn, addr, '\n')
     received_message = conn.recv(port).decode()
 
     try:

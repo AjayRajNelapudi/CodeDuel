@@ -99,8 +99,8 @@ class Command:
 
     def accept_challenge(self, p_title):
         try:
-            self.read_c_id('metadata.json')
-            pull_file = File_Transfer(self.c_id)
+            #self.read_c_id('metadata.json')
+            pull_file = File_Transfer(-1)
             pull_file.download_file(p_title)
         except:
             print('Config before use')

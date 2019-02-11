@@ -78,28 +78,7 @@ class CodeDuel_Database():
         query = "SELECT c_id_A, c_id_B FROM Duel"
         self.conn.execute(query)
         duels = self.conn.fetchall()
-        for duel in duels:
-            score_A = self.get_score(duel[0])
-            score_B = self.get_score(duel[1])
 
-            if type(score_A).__name__ == 'NoneType' and type(score_B).__name__ != 'NoneType':
-                leaderboard.append((duel[1], score_B))
-                continue
-            elif type(score_A).__name__ != 'NoneType' and type(score_B).__name__ == 'NoneType':
-                leaderboard.append((duel[0], score_A))
-                continue
-            elif type(score_A).__name__ == 'NoneType' and type(score_B).__name__ == 'NoneType':
-                continue
-
-            if score_A > score_B:
-                leaderboard.append((duel[0], self.get_contestant_name(duel[0]), score_A))
-            elif score_B > score_A:
-                leaderboard.append((duel[1], self.get_contestant_name(duel[1]), score_B))
-            else:
-                leaderboard.append((duel[0], self.get_contestant_name(duel[0]), score_A))
-                leaderboard.append((duel[1], self.get_contestant_name(duel[1]), score_B))
-
-        leaderboard.sort(key = lambda x: x[1])
 
         return leaderboard
 
