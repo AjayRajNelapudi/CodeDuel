@@ -56,16 +56,17 @@ class Server:
             self.client_conn.send(test_run_status.encode())
 
             duel_id = self.database.get_duel_id(self.c_id)
-            print('\n\n\n')
+            print('\n\n')
             print('Duel ID:', duel_id)
             print('Contestant ID:', self.c_id)
             print('Test Run:', test_run_status)
-            print('\n\n\n')
-        except:
-            print('Testrun failed. Contact admin', self.c_id)
+            print('\n\n')
+        except Exception as e:
+            print(e)
+            print('EXCEPTION RAISED WHILE RUNNING TESTS', self.c_id)
 
     def duel_scores(self):
-        print('score')
+        print('SCORE', self.c_id)
         try:
             opponent_id = self.database.get_opponent_id(self.c_id)
 
@@ -85,19 +86,21 @@ class Server:
             '''
             self.client_conn.send(message.encode())
         except Exception as e:
-            print('Error in retrieveing scores. Contact admin', self.c_id, e)
+            print(e)
+            print('ERROR IN RETRIEVING SCORES', self.c_id)
 
     def validate_login(self):
-        print('login')
+        print('LOGIN', self.c_id)
         try:
             if self.database.validate_login(self.c_id, specs):
                 message = 'success'
             else:
                 message = 'fail'
-
             self.client_conn.send(message.encode())
-        except:
-            print('Login Credentials Incorrect', self.c_id)
+            print(message)
+        except Exception as e:
+            print(e)
+            print('EXCEPTION RAISED IN LOGIN')
 
     def __del__(self):
         with suppress(Exception):
@@ -114,7 +117,6 @@ ftp_service_thread.start()
 
 while True:
     conn, addr = server.accept()
-    print('\n', conn, addr, '\n')
     received_message = conn.recv(port).decode()
 
     try:
