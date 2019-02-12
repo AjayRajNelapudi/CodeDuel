@@ -5,22 +5,114 @@ from PIL import ImageTk, Image
 
 separator = '/'
 
-class Duel_Helper:
+def get_client():
+    try:
+        import client
+        return client
+    except:
+        with suppress(Exception):
+            from Client import client
+            return client
+
+class GUI:
     def __init__(self):
-        self.c_id = 0
+        self.root = Tk()
+        self.root.title("CodeDuel")
+
+    # ********************* LOGIN PAGE ************************* #
+
+    def create_login_page(self):
+        self.login_frame = Frame(self.root, width=1366, height=768)
+
+        self.login_background = ImageTk.PhotoImage(Image.open("background.jpg"))
+        self.login_background_label = Label(self.login_frame, image=self.login_background)
+        self.login_background_label.pack()
+
+        self.c_id_label = Label(self.login_frame, text="Contestant ID", bg='light blue', highlightbackground='#84BEEF')
+        self.c_id_label.place(x=200, y=100, width=100, height=30)
+
+        self.c_id_entry = Entry(self.login_frame, highlightbackground='#84BEEF')
+        self.c_id_entry.place(x=450, y=100, width=200, height=30)
+
+        self.password_label = Label(self.login_frame, text="Password", bg='light blue', highlightbackground='#84BEEF')
+        self.password_label.place(x=200, y=150, width=100, height=30)
+
+        self.password_entry = Entry(self.login_frame, show="*", highlightbackground='#84BEEF')
+        self.password_entry.place(x=450, y=150, width=200, height=30)
+
+        self.login_button = Button(self.login_frame, text="Login", command=self.validate_login, bg='light blue', highlightbackground='#84BEEF')
+        self.login_button.place(x=325, y=250, width=200, height=25)
+
+    # ********************* HOME PAGE ************************* #
+
+    def create_home_page(self):
+        self.home_frame = Frame(self.root, width=1366, height=768)
+
+        self.home_background = ImageTk.PhotoImage(Image.open("background.jpg"))
+        self.home_background_label = Label(self.home_frame, image=self.home_background)
+        self.home_background_label.pack()
+
+        self.scoreboard_label = Label(self.home_frame, text="Scoreboard", bg="light blue")
+        self.scoreboard_label.place(x=900, y=40, width=200, height=20)
+
+        self.contestant_var = StringVar()
+        self.contestant_label = Label(self.home_frame, textvar=self.contestant_var, anchor=W, bg='light green')
+        self.contestant_label.place(x=900, y=80, width=200, height=50)
+
+        self.opponent_var = StringVar()
+        self.opponent_label = Label(self.home_frame, textvar=self.opponent_var, anchor=W, bg='red')
+        self.opponent_label.place(x=900, y=140, width=200, height=50)
+
+        self.refresh_button = Button(self.home_frame, text="Refresh", command=self.update_scoreboard, highlightbackground='#84BEEF')
+        self.refresh_button.place(x=900, y=200, width=200, height=25)
+
+        self.challenge_key_label = Label(self.home_frame, text="Challenge Key", bg="light blue")
+        self.challenge_key_label.place(x=50, y=50)
+
+        self.challenge_key_entry = Entry(self.home_frame, highlightbackground='#84BEEF')
+        self.challenge_key_entry.place(x=200, y=50, width=300, height=30)
+
+        self.accept_challenge_button = Button(self.home_frame, text="Accept Challenge", command=self.accept_challenge, highlightbackground='#84BEEF')
+        self.accept_challenge_button.place(x=550, y=50, width=200, height=25)
+
+        self.question_text = Text(self.home_frame)
+        self.question_text.place(x=50, y=100, width = 700, height = 480)
+
+        self.program_file_label = Label(self.home_frame, text="Program File", bg="light blue")
+        self.program_file_label.place(x=50, y=600)
+
+        self.program_file_var = StringVar()
+        self.program_file_entry = Entry(self.home_frame, textvar=self.program_file_var, highlightbackground='#84BEEF')
+        self.program_file_entry.place(x=165, y=600, width=400, height=30)
+
+        self.program_file_button = Button(self.home_frame, text="Select File", command=self.file_dialog_box, highlightbackground='#84BEEF')
+        self.program_file_button.place(x=600, y=600, width=150, height=25)
+
+        self.push_file_button = Button(self.home_frame, text="Push File", command=self.request_upload, highlightbackground='#84BEEF')
+        self.push_file_button.place(x=165, y = 660, width=100, height=25)
+
+        self.logout_button = Button(self.home_frame, text="Log Out", command=self.logout, highlightbackground='#84BEEF')
+        self.logout_button.place(x=1200, y=40)
 
     def validate_login(self):
-        c_id = c_id_entry.get()
-        password = password_entry.get()
+        c_id = self.c_id_entry.get()
+        password = self.password_entry.get()
 
         self.c_id = c_id
 
         client = get_client()
         client_command = client.Command()
         if client_command.validate_login(c_id, password):
-            login_frame.destroy()
-            home_frame.pack()
-            home_frame.tkraise()
+            self.create_home_page()
+            self.login_frame.destroy()
+            self.home_frame.pack()
+            self.home_frame.tkraise()
+
+    def logout(self):
+        self.create_login_page()
+        self.home_frame.destroy()
+        self.login_frame.pack()
+        self.login_frame.tkraise()
 
     def file_dialog_box(self):
         from tkinter import Tk
@@ -29,7 +121,7 @@ class Duel_Helper:
         Tk().withdraw()
         self.file_path = askopenfilename()
 
-        program_file_var.set(self.file_path)
+        self.program_file_var.set(self.file_path)
 
     def separate_dir_file(self):
         dir_list = self.file_path.split(separator)
@@ -43,8 +135,8 @@ class Duel_Helper:
         global contestant_var, opponent_var
 
         contestant_score, opponent_score = scoreboard.split('\n')
-        contestant_var.set(contestant_score.replace('->', ''))
-        opponent_var.set(opponent_score.replace('->', ''))
+        self.contestant_var.set(contestant_score.replace('->', ''))
+        self.opponent_var.set(opponent_score.replace('->', ''))
 
     def request_upload(self):
         self.separate_dir_file()
@@ -56,103 +148,18 @@ class Duel_Helper:
     def accept_challenge(self):
         client = get_client()
         client_command = client.Command()
-        p_title = challenge_key_entry.get() + ".txt"
+        p_title = self.challenge_key_entry.get() + ".txt"
         client_command.accept_challenge(p_title)
         try:
             question_spec = open(p_title, 'r')
             question = question_spec.read()
-            question_text.insert(1.0, question)
+            self.question_text.insert(1.0, question)
             question_spec.close()
         except:
-            question_text.insert(1.0, "No Such Challenge!")
+            self.question_text.insert(1.0, "No Such Challenge!")
 
-duel_helper = Duel_Helper()
-
-def get_client():
-    try:
-        import client
-        return client
-    except:
-        with suppress(Exception):
-            from Client import client
-            return client
-
-root = Tk()
-root.title("CodeDuel")
-
-login_background = ImageTk.PhotoImage(Image.open("background.jpg"))
-home_background = ImageTk.PhotoImage(Image.open("background.jpg"))
-
-login_frame = Frame(root, width=1366, height=768)
-home_frame = Frame(root, width=1366, height=768)
-
-login_background_label = Label(login_frame, image=login_background)
-login_background_label.pack()
-
-home_background_label = Label(home_frame, image=home_background)
-home_background_label.pack()
-
-login_frame.pack()
-
-# ********************* LOGIN PAGE ************************* #
-
-c_id_label = Label(login_frame, text="Contestant ID", bg='light blue', highlightbackground='#84BEEF')
-c_id_label.place(x=200, y=100, width=100, height=30)
-
-c_id_entry = Entry(login_frame, highlightbackground='#84BEEF')
-c_id_entry.place(x=450, y=100, width=200, height=30)
-
-password_label = Label(login_frame, text="Password", bg='light blue', highlightbackground='#84BEEF')
-password_label.place(x=200, y=150, width=100, height=30)
-
-password_entry = Entry(login_frame, show="*", highlightbackground='#84BEEF')
-password_entry.place(x=450, y=150, width=200, height=30)
-
-login_button = Button(login_frame, text="Login", command=duel_helper.validate_login, bg='light blue', highlightbackground='#84BEEF')
-login_button.place(x=325, y=250, width=200, height=25)
-
-login_frame.tkraise()
-
-
-# ********************* HOME PAGE ************************* #
-
-scoreboard_label = Label(home_frame, text="Scoreboard", bg="light blue")
-scoreboard_label.place(x=900, y=40, width=200, height=20)
-
-contestant_var = StringVar()
-contestant_label = Label(home_frame, textvar=contestant_var, anchor=W, bg='light green')
-contestant_label.place(x=900, y=80, width=200, height=50)
-
-opponent_var = StringVar()
-opponent_label = Label(home_frame, textvar=opponent_var, anchor=W, bg='red')
-opponent_label.place(x=900, y=140, width=200, height=50)
-
-refresh_button = Button(home_frame, text="Refresh", command=duel_helper.update_scoreboard, highlightbackground='#84BEEF')
-refresh_button.place(x=900, y=200, width=200, height=25)
-
-challenge_key_label = Label(home_frame, text="Challenge Key", bg="light blue")
-challenge_key_label.place(x=50, y=50)
-
-challenge_key_entry = Entry(home_frame, highlightbackground='#84BEEF')
-challenge_key_entry.place(x=200, y=50, width=300, height=30)
-
-accept_challenge_button = Button(home_frame, text="Accept Challenge", command=duel_helper.accept_challenge, highlightbackground='#84BEEF')
-accept_challenge_button.place(x=550, y=50, width=200, height=25)
-
-question_text = Text(home_frame)
-question_text.place(x=50, y=100, width = 700, height = 480)
-
-program_file_label = Label(home_frame, text="Program File", bg="light blue")
-program_file_label.place(x=50, y=600)
-
-program_file_var = StringVar()
-program_file_entry = Entry(home_frame, textvar=program_file_var, highlightbackground='#84BEEF')
-program_file_entry.place(x=165, y=600, width=400, height=30)
-
-program_file_button = Button(home_frame, text="Select File", command=duel_helper.file_dialog_box, highlightbackground='#84BEEF')
-program_file_button.place(x=600, y=600, width=150, height=25)
-
-push_file_button = Button(home_frame, text="Push File", command=duel_helper.request_upload, highlightbackground='#84BEEF')
-push_file_button.place(x=165, y = 660, width=100, height=25)
-
-root.mainloop()
+user_interface = GUI()
+user_interface.create_login_page()
+user_interface.login_frame.pack()
+user_interface.login_frame.tkraise()
+user_interface.root.mainloop()

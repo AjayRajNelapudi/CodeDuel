@@ -3,26 +3,19 @@ import random
 import os
 import time
 
-commands = [['python3', 'client.py', 'push', 'SumOfN.c'],
+generate_c_id = lambda: str(random.randrange(1, 4))
+commands = [['python3', 'client.py', 'config', generate_c_id(), 'key'],
+            ['python3', 'client.py', 'push', 'SumOfN.c'],
             ['python3', 'client.py', 'pull', 'SumOfN.txt'],
             ['python3', 'client.py', 'points'],
             ['python3', 'client.py', 'help']]
 
-c_id = random.randrange(1, 4)
-login_command = ['python3', 'client.py', 'config', str(c_id), 'key']
-print(login_command)
-try:
-    process = run(login_command, cwd=os.getcwd(), timeout=10)
-    process.check_returncode()
-except Exception as e:
-    print(e)
-    print(login_command)
-
 command = None
 try:
     while True:
-        command_index = random.randrange(0, 3)
+        command_index = random.randrange(0, 4)
         command = commands[command_index]
+        print('COMMAND:', command, '\nOUTPUT:')
         process = run(command, cwd=os.getcwd(), timeout=10)
         process.check_returncode()
         time.sleep(2)
