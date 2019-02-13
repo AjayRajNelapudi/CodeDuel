@@ -139,10 +139,9 @@ class GUI:
         self.opponent_var.set(opponent_score.replace('->', ''))
 
     def request_upload(self):
-        self.separate_dir_file()
         client = get_client()
         client_command = client.Command()
-        client_command.push_file(self.file)
+        client_command.push_file(self.file_path)
         self.update_scoreboard()
 
     def accept_challenge(self):

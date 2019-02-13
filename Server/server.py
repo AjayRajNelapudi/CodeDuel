@@ -41,7 +41,7 @@ class Server:
         self.file = dir_list[-1]
 
     def client_service(self):
-        print('test')
+        print('TEST')
         try:
             self.separate_dir_file(self.specs)
             src_path = self.database.get_directory_path('src')
@@ -63,7 +63,9 @@ class Server:
             print('\n\n')
         except Exception as e:
             print(e)
-            print('EXCEPTION RAISED WHILE RUNNING TESTS', self.c_id)
+            print('EXCEPTION RAISED WHILE RUNNING TESTS | c_id:', self.c_id)
+            with suppress(Exception):
+                self.client_conn.send('UNEXPECTED ERROR. CONTACT ADMIN'.encode())
 
     def duel_scores(self):
         print('SCORE', self.c_id)

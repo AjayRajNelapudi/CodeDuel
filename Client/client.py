@@ -16,18 +16,21 @@ class File_Transfer:
         self.ftp.login()
         #self.ftp.retrlines('LIST')
 
+    def separate_dir_file(self, filepath):
+        separator = '/'
+        dir_list = filepath.split(separator)
+        self.dir = separator.join(dir_list[:-1])
+        self.file = dir_list[-1]
+
     def upload_file(self, filename):
-        if filename.count('/') != 0:
-            dir, file = filename.split('/')
-        else:
-            file = filename
-        file, extension = file.split('.')
+        self.separate_dir_file(filename)
+        file, extension = self.file.split('.')
         try:
             self.ftp.cwd('documents/codeduelcursors2019/src' + separator + str(self.c_id) + separator + file)
         except:
             self.ftp.cwd('documents/codeduelcursors2019/src' + separator + str(self.c_id))
 
-        self.ftp.storbinary('STOR ' + file, open(file + '.' + extension, 'rb'))
+        self.ftp.storbinary('STOR ' + self.file, open(filename, 'rb'))
 
     def download_file(self, filename):
         file, extension = filename.split('.')

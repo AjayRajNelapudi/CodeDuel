@@ -45,25 +45,40 @@ class Run_Tests:
 
     def compile(self):
         if not self.compiler in {'python', 'python3'}:
-            compile_src = Popen([self.compiler, self.program_file], cwd=self.program_filepath)
+            compilation_errors_file = open(self.program_filepath + separator + 'CompilationErrors.txt', 'w')
+            compile_src = Popen([self.compiler, self.program_file], cwd=self.program_filepath, stderr=compilation_errors_file)
             compile_src.wait()
+            compilation_errors_file.close()
+            if compile_src.returncode != 0:
+                return False
+        return True
+
 
     def execute(self, input_data):
-        with open(self.program_filepath + separator + 'ActualOutput.txt', 'w') as actual_output_file:
-            status = run(self.run_command,
-                        cwd=self.program_filepath,
-                        input=input_data,
-                        encoding='ascii',
-                        stdout=actual_output_file,
-                        timeout=5,
-                        preexec_fn=self.set_safe_limits()
-                    )
+        actual_output_file = open(self.program_filepath + separator + 'ActualOutput.txt', 'w')
+        stderr_file = open(self.program_filepath + separator + 'stderr.txt', 'w')
+        status = run(self.run_command,
+                    cwd=self.program_filepath,
+                    input=input_data,
+                    encoding='ascii',
+                    stdout=actual_output_file,
+                    stderr=stderr_file,
+                    timeout=5,
+                    preexec_fn=self.set_safe_limits()
+                )
+        actual_output_file.close()
+        stderr_file.close()
 
         return status.returncode
 
     def run_tests(self):
         self.get_compiler_runtime_env()
-        self.compile()
+        if not self.compile():
+            compilation_errors_file = open(self.program_filepath + separator + 'CompilationErrors.txt', 'w')
+            compilation_errors = compilation_errors_file.read()
+            compilation_errors_file.close()
+            return compilation_errors
+
         test_run_status = []
         for t_id, input_filename, expected_output_filename in self.input_output:
             input_file = open(self.io_filepath + separator + input_filename, 'r')
@@ -72,7 +87,10 @@ class Run_Tests:
             input_data = input_file.read()
             returncode = self.execute(input_data)
             if returncode != 0:
-                return False
+                stderr = open(self.program_filepath + separator + 'stderr.txt', 'r')
+                error = stderr.read()
+                stderr.close()
+                return error
 
             actual_output_file = open(self.program_filepath + separator + 'ActualOutput.txt', 'r')
 
