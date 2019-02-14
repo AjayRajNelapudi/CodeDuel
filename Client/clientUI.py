@@ -2,6 +2,7 @@ from tkinter import *
 from contextlib import suppress
 import os
 from PIL import ImageTk, Image
+from tkinter import messagebox
 
 separator = '/'
 
@@ -53,18 +54,18 @@ class GUI:
         self.home_background_label.pack()
 
         self.scoreboard_label = Label(self.home_frame, text="Scoreboard", bg="light blue")
-        self.scoreboard_label.place(x=900, y=40, width=200, height=20)
+        self.scoreboard_label.place(x=930, y=40, width=200, height=20)
 
         self.contestant_var = StringVar()
         self.contestant_label = Label(self.home_frame, textvar=self.contestant_var, anchor=W, bg='light green')
-        self.contestant_label.place(x=900, y=80, width=200, height=50)
+        self.contestant_label.place(x=930, y=80, width=200, height=50)
 
         self.opponent_var = StringVar()
-        self.opponent_label = Label(self.home_frame, textvar=self.opponent_var, anchor=W, bg='red')
-        self.opponent_label.place(x=900, y=140, width=200, height=50)
+        self.opponent_label = Label(self.home_frame, textvar=self.opponent_var, anchor=W, bg='yellow')
+        self.opponent_label.place(x=930, y=140, width=200, height=50)
 
         self.refresh_button = Button(self.home_frame, text="Refresh", command=self.update_scoreboard, highlightbackground='#84BEEF')
-        self.refresh_button.place(x=900, y=200, width=200, height=25)
+        self.refresh_button.place(x=930, y=200, width=200, height=25)
 
         self.challenge_key_label = Label(self.home_frame, text="Challenge Key", bg="light blue")
         self.challenge_key_label.place(x=50, y=50)
@@ -107,6 +108,8 @@ class GUI:
             self.login_frame.destroy()
             self.home_frame.pack()
             self.home_frame.tkraise()
+        else:
+            messagebox.showwarning('Login Failed', 'Bad Credentials')
 
     def logout(self):
         self.create_login_page()
@@ -141,7 +144,11 @@ class GUI:
     def request_upload(self):
         client = get_client()
         client_command = client.Command()
-        client_command.push_file(self.file_path)
+        test_run_status = client_command.push_file(self.file_path)
+        if test_run_status.startswith('P'):
+            messagebox.showinfo('Test Run', test_run_status)
+        else:
+            messagebox.showwarning('Error', test_run_status)
         self.update_scoreboard()
 
     def accept_challenge(self):

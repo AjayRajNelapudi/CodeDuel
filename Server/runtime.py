@@ -31,6 +31,8 @@ class Run_Tests:
             self.compiler = 'javac'
         elif self.extension == 'py':
             self.compiler = 'python3'
+        else:
+            raise TypeError(self.extension, 'not supported\n')
 
         if self.compiler in {'gcc', 'g++'}:
             self.run_command = './a.out'
@@ -64,7 +66,7 @@ class Run_Tests:
                     stdout=actual_output_file,
                     stderr=stderr_file,
                     timeout=5,
-                    preexec_fn=self.set_safe_limits()
+                    preexec_fn=self.set_safe_limits
                 )
         actual_output_file.close()
         stderr_file.close()
@@ -74,9 +76,11 @@ class Run_Tests:
     def run_tests(self):
         self.get_compiler_runtime_env()
         if not self.compile():
-            compilation_errors_file = open(self.program_filepath + separator + 'CompilationErrors.txt', 'w')
+            compilation_errors_file = open(self.program_filepath + separator + 'CompilationErrors.txt', 'r')
             compilation_errors = compilation_errors_file.read()
             compilation_errors_file.close()
+            if compilation_errors == '':
+                compilation_errors = 'COMPILATION ERROR'
             return compilation_errors
 
         test_run_status = []
@@ -109,4 +113,4 @@ class Run_Tests:
             expected_output_file.close()
             actual_output_file.close()
 
-        return test_run_status
+        return ' '.join(test_run_status)

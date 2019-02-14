@@ -52,7 +52,6 @@ class Server:
 
             run = runtime.Run_Tests(self.c_id, self.file, src_path, test_path, test_file_names)
             test_run_status = run.run_tests()
-            test_run_status = ' '.join(test_run_status)
             self.client_conn.send(test_run_status.encode())
 
             duel_id = self.database.get_duel_id(self.c_id)
@@ -61,6 +60,10 @@ class Server:
             print('Contestant ID:', self.c_id)
             print('Test Run:', test_run_status)
             print('\n\n')
+        except TypeError as te:
+            print('WRONG FILE TYPE | c_id:', self.c_id)
+            with suppress(Exception):
+                self.client_conn.send('FILE TYPE NOT SUPPORTED'.encode())
         except Exception as e:
             print(e)
             print('EXCEPTION RAISED WHILE RUNNING TESTS | c_id:', self.c_id)

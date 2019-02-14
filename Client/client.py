@@ -97,7 +97,7 @@ class Command:
             self.server.send(message.encode())
 
             test_run_status = self.server.recv(1024)
-            return 'Test Run: ' + test_run_status.decode()
+            return test_run_status.decode()
         except Exception as e:
             print(e)
             return '\n'
