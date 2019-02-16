@@ -94,6 +94,9 @@ class Run_Tests:
                 stderr = open(self.program_filepath + separator + 'stderr.txt', 'r')
                 error = stderr.read()
                 stderr.close()
+
+                if error == '':
+                    error = 'Segmentation Fault (Core Dumped)'
                 return error
 
             actual_output_file = open(self.program_filepath + separator + 'ActualOutput.txt', 'r')
