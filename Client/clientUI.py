@@ -159,6 +159,7 @@ class GUI:
         try:
             question_spec = open(p_title, 'r')
             question = question_spec.read()
+            self.question_text.delete(1.0, END)
             self.question_text.insert(1.0, question)
             question_spec.close()
         except:

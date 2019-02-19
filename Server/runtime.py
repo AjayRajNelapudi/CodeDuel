@@ -1,6 +1,7 @@
 from subprocess import run, Popen
 import os
 from contextlib import suppress
+import resource
 with suppress(Exception):
     from Server import database
 
@@ -43,7 +44,7 @@ class Run_Tests:
 
     def set_safe_limits(self):
         # read resource module and set limits accordingly
-        pass
+        resource.setrlimit(resource.RLIMIT_CPU, (1, 1))
 
     def compile(self):
         if not self.compiler in {'python', 'python3'}:
