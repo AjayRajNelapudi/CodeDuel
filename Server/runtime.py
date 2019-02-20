@@ -40,7 +40,7 @@ class Run_Tests:
         elif self.compiler == 'javac':
             self.run_command = ['java', self.filename]
         elif self.compiler in {'python', 'python3'}:
-            self.run_command = ['python3', self.filename]
+            self.run_command = ['python3', self.filename + '.' + self.extension]
 
     def set_safe_limits(self):
         # read resource module and set limits accordingly
@@ -91,13 +91,17 @@ class Run_Tests:
 
             input_data = input_file.read()
             returncode = self.execute(input_data)
+
+            if returncode == -24:
+                return 'TimeOut'
+
             if returncode != 0:
                 stderr = open(self.program_filepath + separator + 'stderr.txt', 'r')
                 error = stderr.read()
                 stderr.close()
 
                 if error == '':
-                    error = 'Segmentation Fault (Core Dumped)'
+                    error = 'Runtime Error'
                 return error
 
             actual_output_file = open(self.program_filepath + separator + 'ActualOutput.txt', 'r')
