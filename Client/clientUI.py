@@ -3,6 +3,7 @@ from contextlib import suppress
 import os
 from PIL import ImageTk, Image
 from tkinter import messagebox
+import json
 
 separator = '/'
 
@@ -96,20 +97,29 @@ class GUI:
         self.logout_button.place(x=1200, y=40)
 
     def validate_login(self):
-        c_id = self.c_id_entry.get()
-        password = self.password_entry.get()
+        try:
+            c_id = self.c_id_entry.get()
+            password = self.password_entry.get()
 
-        self.c_id = c_id
+            self.c_id = c_id
 
-        client = get_client()
-        client_command = client.Command()
-        if client_command.validate_login(c_id, password):
-            self.create_home_page()
-            self.login_frame.destroy()
-            self.home_frame.pack()
-            self.home_frame.tkraise()
-        else:
-            messagebox.showwarning('Login Failed', 'Bad Credentials')
+            client = get_client()
+            client_command = client.Command()
+            if client_command.validate_login(c_id, password):
+                self.create_home_page()
+                self.login_frame.destroy()
+                self.home_frame.pack()
+                self.home_frame.tkraise()
+
+                metadata = dict()
+                metadata['c_id'] = c_id
+                metadata['password'] = password
+                with open('metadata.json', 'w') as metadata_file:
+                    json.dump(metadata, metadata_file)
+            else:
+                messagebox.showwarning('Login Failed', 'Bad Credentials')
+        except:
+            messagebox.showwarning('Error', 'Login Failed')
 
     def logout(self):
         self.create_login_page()
@@ -132,24 +142,30 @@ class GUI:
         self.file = dir_list[-1]
 
     def update_scoreboard(self):
-        client = get_client()
-        client_command = client.Command()
-        scoreboard = client_command.get_duel_scores()
-        global contestant_var, opponent_var
+        try:
+            client = get_client()
+            client_command = client.Command()
+            scoreboard = client_command.get_duel_scores()
+            global contestant_var, opponent_var
 
-        contestant_score, opponent_score = scoreboard.split('\n')
-        self.contestant_var.set(contestant_score.replace('->', ''))
-        self.opponent_var.set(opponent_score.replace('->', ''))
+            contestant_score, opponent_score = scoreboard.split('\n')
+            self.contestant_var.set(contestant_score.replace('->', ''))
+            self.opponent_var.set(opponent_score.replace('->', ''))
+        except:
+            messagebox.showwarning('Error', 'Scoreboard update failed')
 
     def request_upload(self):
-        client = get_client()
-        client_command = client.Command()
-        test_run_status = client_command.push_file(self.file_path)
-        if test_run_status.startswith('P'):
-            messagebox.showinfo('Test Run', test_run_status)
-        else:
-            messagebox.showwarning('Error', test_run_status)
-        self.update_scoreboard()
+        try:
+            client = get_client()
+            client_command = client.Command()
+            test_run_status = client_command.push_file(self.file_path)
+            if test_run_status.startswith('P'):
+                messagebox.showinfo('Test Run', test_run_status)
+            else:
+                messagebox.showwarning('Error', test_run_status)
+            self.update_scoreboard()
+        except:
+            messagebox.showwarning('Error', 'File Push Failed')
 
     def accept_challenge(self):
         client = get_client()

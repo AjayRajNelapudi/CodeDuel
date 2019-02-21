@@ -82,13 +82,7 @@ class Server:
             opponent_score = 0 if self.database.get_score(opponent_id) is None else self.database.get_score(opponent_id)
 
             message = contestant_name + ' -> ' + str(contestant_score) + '\n' + opponent_name + ' -> ' + str(opponent_score)
-            '''leaderboard = self.database.make_duel_leaderboard()
-            message = ''
-            for contestant in leaderboard:
-                for attribute in contestant:
-                    message += str(attribute) + '\t'
-                message += '\n'
-            '''
+
             self.client_conn.send(message.encode())
         except Exception as e:
             print(e)
