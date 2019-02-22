@@ -5,6 +5,10 @@ insert into contestant
     (3, 'key', '901290328430', 'Raghu Mylapilli', 'GVP', 3),
     (4, 'key', '786230304943', 'Sai Pranav Nistala', 'AU', 3);
 
+insert into Admin
+    values
+    ('admin', 'key');
+
 insert into duel
     values
     (1, 1, 2),

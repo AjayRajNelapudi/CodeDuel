@@ -16,6 +16,11 @@ CREATE TABLE Contestant (
     c_year INTEGER NOT NULL
 );
 
+CREATE TABLE Admin (
+    admin_id VARCHAR(20) PRIMARY KEY,
+    password VARCHAR(50) NOT NULL
+);
+
 CREATE TABLE Problem (
     p_id INTEGER PRIMARY KEY,
     c_id INTEGER NOT NULL,
