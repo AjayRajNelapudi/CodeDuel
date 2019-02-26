@@ -1,0 +1,24 @@
+Hello everyone,
+The Department of Computer Science and Engineering, ANITS is proud to present Code Avadhan as a part of its Technical Fest, Cursors 2k19.
+
+The contest proceeds as below:
+1. Contestants are put into duels based on the problem complexity.
+2. The contestant will challenge his opponent and vice versa.
+3. The contestant who solved more problems in the given time wins the duel and is selected to the next round.
+
+The rules of the contest are as below:
+1. Contestants are expected to prepare their own questions.
+2. The solutions provided by the contestants to their own questions should not contain loops or recursion.
+3. The solution should not exceed 100 lines of code in C language.
+4. The supported languages are C, C++, Java and Python.
+5. Each problem should be accompanied by 3 testcases.
+6. The question should be prepared as <ProblemName>.txt file.
+7. The testcases should be made as input1.txt, output1.txt... input2.txt, output2.txt...
+8. The question and its testcases should be put into a folder where each folder represents a problem.
+9. All these folders should be put into another folder which is to be named after your name.
+10. This folder should be zipped and emailed to najayraj.16.cse@anits.edu.in latest by 24th February, 11:59 PM.
+
+Contestants are expected to report to the college on 25th February by 9:00 AM.
+Since the event consists of rounds, the contest is expected to go on for the entire day.
+
+The registration is done at the spot at Rs. 50 per head.

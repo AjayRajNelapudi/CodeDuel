@@ -12,7 +12,7 @@ class File_Transfer:
         self.c_id = c_id
 
         self.ftp = FTP('')
-        self.ftp.connect('localhost', 1026)
+        self.ftp.connect('10.0.67.232', 1026)
         self.ftp.login()
         #self.ftp.retrlines('LIST')
 
@@ -45,7 +45,7 @@ class File_Transfer:
 class Command:
     def __init__(self):
         self.server = socket.socket()
-        hostname, port = 'localhost', 32757
+        hostname, port = '10.0.67.232', 32757
         self.server.connect((hostname, port))
 
         try:
