@@ -1,0 +1,87 @@
+div.login-form {
+	float: right;
+	background: silver;
+	border-radius: 5px; 
+}
+
+input.entry {
+	border-radius: 5px;
+	border-width: 3px;
+	border-color: grey;
+}
+
+h1.banner {
+	color: #FFFFFF;
+	background-color: #021191;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 22px;
+}
+
+table.leaderboard {
+	border-radius: 15px;
+	border-width: 3px;
+	border-color: white;
+	font-family: Arial, Helvetica, sans-serif;
+	color: #FFFFFF;
+	border-spacing: 5px;
+    border-style: solid;
+}
+
+h2.leaderboard-banner {
+	font-family: Arial, Helvetica, sans-serif;
+	color: #FFFFFF;
+}
+
+div.navigation-panel {
+	border-radius: 5px;
+	background-color: black;
+	padding: 0;
+	margin: 0;
+}
+
+a.navigation-button {
+	border-radius: 5px;
+	font-family: Arial, Helvetica, sans-serif;
+	text-decoration: none;
+	color: white;
+}
+
+div.introduction {
+	font-family: Arial, Helvetica, sans-serif;
+	color: white;
+}
+
+table.contestants {
+	border-radius: 15px;
+	border-width: 3px;
+	border-color: white;
+	font-family: Arial, Helvetica, sans-serif;
+	color: #FFFFFF;
+	border-spacing: 5px;
+    border-style: solid;
+}
+
+h2.contestants-banner {
+	font-family: Arial, Helvetica, sans-serif;
+	color: #FFFFFF;
+}
+
+form.contestant-entry {
+	font-family: Arial, Helvetica, sans-serif;
+	color: #FFFFFF;
+}
+
+h3.contestant-banner {
+	color: white;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+h4.contestant-banner {
+	color: white;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+form.contestant-remove {
+	font-family: Arial, Helvetica, sans-serif;
+	color: #FFFFFF;
+}

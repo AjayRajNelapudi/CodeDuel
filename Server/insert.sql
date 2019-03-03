@@ -9,10 +9,10 @@ insert into Admin
     values
     ('admin', 'key');
 
-insert into duel
+insert into duel(c_id_A, c_id_B)
     values
-    (1, 1, 2),
-    (2, 3, 4);
+    (1, 2),
+    (3, 4);
 
 insert into problem
     values

@@ -54,7 +54,7 @@ ADD CONSTRAINT c_id_fk_score FOREIGN KEY(c_id) REFERENCES Contestant(c_id),
 ADD CONSTRAINT t_id_fk_score FOREIGN KEY(t_id) REFERENCES Testcase(t_id);
 
 CREATE TABLE Duel (
-    duel_id INTEGER NOT NULL,
+    duel_id INTEGER PRIMARY KEY AUTO_INCREMENT,
     c_id_A INTEGER NOT NULL,
     c_id_B INTEGER NOT NULL
 );
